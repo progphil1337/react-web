@@ -2,11 +2,17 @@
 
 namespace ReactMvc;
 
+use FastRoute\Dispatcher;
 use Psr\Http\Message\ServerRequestInterface;
 use React\Http\HttpServer;
 use React\Http\Message\Response;
 use React\Socket\SocketServer;
 use ReactMvc\Config\AbstractConfig;
+use ReactMvc\Mvc\Http\Header;
+use ReactMvc\Mvc\Http\MethodEnum;
+use ReactMvc\Mvc\Http\Request;
+use ReactMvc\Mvc\Routing\RouteHandler;
+use FastRoute;
 
 /**
  * Main
@@ -28,26 +34,66 @@ final class Main
         return self::$instance;
     }
 
+    private Dispatcher $dispatcher;
+
     private function __construct(private AbstractConfig $config)
     {
     }
 
     public function run(): void
     {
-        $this->loadMvc();
-
-        $this->start();
+        $this->loadRoutes(APP_PATH . $this->config->get('Routes'));
+        $this->start($this->config->get('HttpServer::ip'), (int)$this->config->get('HttpServer::port'));
     }
 
-    private function start(): void
+    private function loadRoutes(string $routesFile)
     {
-        $uri = $this->config->implode(':', [
-            'Server::ip',
-            'Server::port'
+        $routeHandler = new RouteHandler();
+        $routeHandler->loadFromFile($routesFile);
+
+        $this->dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) use ($routeHandler) {
+            foreach ($routeHandler->getRoutes() as $route) {
+                /** @var MethodEnum $httpMethod */
+                foreach ($route->httpMethods as $httpMethod) {
+                    var_dump($route->route);
+                    $r->addRoute($httpMethod->value, $route->route, $route);
+                }
+            }
+        });
+    }
+
+    private function start(string $ip, int $port): void
+    {
+        $uri = implode(':', [
+            $ip,
+            $port
         ]);
 
         $httpServer = new HttpServer(
-            fn(ServerRequestInterface $request): Response => new Response(200, ['Content-Type' => 'text/plain'], 'Hello World')
+            function (ServerRequestInterface $request): Response {
+
+                $r = new Request(
+                    uri: $request->getUri(),
+                    route: $request->getUri()->getPath(),
+                    method: MethodEnum::from($request->getMethod()),
+                    header: new Header(array_change_key_case($request->getHeaders()), CASE_LOWER),
+                    queryParams: $request->getQueryParams()
+                );
+
+                $uri = $r->route;
+                // Strip query string (?foo=bar) and decode URI
+                if (false !== $pos = strpos($uri, '?')) {
+                    $uri = substr($uri, 0, $pos);
+                }
+                $uri = rawurldecode($uri);
+
+                $routeInfo = $this->dispatcher->dispatch($r->method->value, $uri);
+                switch ($routeInfo[0]) {
+                    case Dispatcher::NOT_FOUND: return new Response(404, ['Content-Type' => 'text/plain'], sprintf('Route %s not found', $uri));
+                    case Dispatcher::METHOD_NOT_ALLOWED: return new Response(405, ['Content-Type' => 'text/plain'], sprintf('Method %s not found', $r->method->value));
+                    case Dispatcher::FOUND: return $routeInfo[1]->callHandler($r, $routeInfo[2])->toHttpResponse();
+                }
+            }
         );
 
         $socketServer = new SocketServer($uri);
