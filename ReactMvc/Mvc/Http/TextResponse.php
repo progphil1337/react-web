@@ -3,18 +3,17 @@
 namespace ReactMvc\Mvc\Http;
 
 /**
- * HtmlResponse
+ * TextResponse
  *
  * @package ReactMvc\Mvc\Http
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
-class HtmlResponse extends AbstractResponse
+class TextResponse extends AbstractResponse
 {
-
 
     protected function getContentType(): string
     {
-        return 'text/html';
+        return 'text/plain';
     }
 }

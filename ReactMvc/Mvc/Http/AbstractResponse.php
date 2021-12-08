@@ -13,17 +13,15 @@ use React\Http\Message\Response as HttpResponse;
  */
 abstract class AbstractResponse
 {
-    private int $code = 200;
-    private string $contentType = 'text/html';
-    private string $charset = 'utf-8';
 
-    public function __construct(private string $content) {
-    }
+    public function __construct(private string $content, private int $code = 200, private string $charset = 'utf-8') {}
+
+    abstract protected function getContentType(): string;
 
     public function toHttpResponse(): HttpResponse
     {
         return new HttpResponse($this->code, [
-            'Content-Type' => $this->contentType,
+            'Content-Type' => $this->getContentType(),
             'charset' => $this->charset
         ], $this->content);
     }
