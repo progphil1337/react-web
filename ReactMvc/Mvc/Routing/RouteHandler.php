@@ -4,6 +4,7 @@ namespace ReactMvc\Mvc\Routing;
 
 use ReactMvc\Console;
 use ReactMvc\Enum\BasicActionEnum;
+use ReactMvc\Mvc\AbstractFactory;
 use ReactMvc\Mvc\Http\MethodEnum;
 use ReactMvc\Mvc\Http\AbstractResponse;
 use ReactMvc\Mvc\Routing\Exception\RoutesFileNotFoundException;
@@ -66,6 +67,13 @@ final class RouteHandler
         return self::$loadedHandlers[$route->route] ?? null;
     }
 
+    private static array $factories = [];
+
+    public static function registerFactory(AbstractFactory $factory): void
+    {
+        self::$factories[] = $factory;
+    }
+
     public static function callHandler(string $handlerName, Route $route, MethodEnum $methodEnum, array $vars): AbstractResponse
     {
         $handler = self::getHandler($route);
@@ -83,6 +91,15 @@ final class RouteHandler
                 $handler = $reflectionClass->newInstance();
             } catch (\ReflectionException $e) {
                 Console::log(new self(), $e->getMessage());
+            }
+
+            /** @var AbstractFactory $factory */
+            foreach (self::$factories as $factory) {
+                foreach ($factory->getDependencies() as $dependency) {
+                    if ($handler instanceof $dependency) {
+                        $factory->inject($handler);
+                    }
+                }
             }
 
             self::cacheHandler($route, $handler);

@@ -8,11 +8,14 @@ use React\Http\HttpServer;
 use React\Http\Message\Response;
 use React\Socket\SocketServer;
 use ReactMvc\Config\AbstractConfig;
+use ReactMvc\Mvc\Controller\ControllerFactory;
 use ReactMvc\Mvc\Http\Header;
 use ReactMvc\Mvc\Http\MethodEnum;
 use ReactMvc\Mvc\Http\Request;
 use ReactMvc\Mvc\Routing\RouteHandler;
 use FastRoute;
+use Twig\Environment as TwigEnvironment;
+use Twig\Loader\FilesystemLoader as TwigFilesystemLoader;
 
 /**
  * Main
@@ -55,11 +58,37 @@ final class Main
             foreach ($routeHandler->getRoutes() as $route) {
                 /** @var MethodEnum $httpMethod */
                 foreach ($route->httpMethods as $httpMethod) {
-                    var_dump($route->route);
                     $r->addRoute($httpMethod->value, $route->route, $route);
                 }
             }
         });
+
+        $this->loadFactories();
+    }
+
+    private function loadFactories(): void
+    {
+        RouteHandler::registerFactory($this->getControllerFactory());
+    }
+
+    private function getTwigEnvironment(): TwigEnvironment
+    {
+        $loader = new TwigFilesystemLoader(APP_PATH . 'View');
+        $twig = new TwigEnvironment(
+            $loader
+        );
+
+        return $twig;
+    }
+
+    /**
+     * @return ControllerFactory
+     */
+    private function getControllerFactory(): ControllerFactory
+    {
+        return new ControllerFactory(
+            $this->getTwigEnvironment()
+        );
     }
 
     private function start(string $ip, int $port): void
@@ -81,7 +110,6 @@ final class Main
                 );
 
                 $uri = $r->route;
-                // Strip query string (?foo=bar) and decode URI
                 if (false !== $pos = strpos($uri, '?')) {
                     $uri = substr($uri, 0, $pos);
                 }
@@ -89,9 +117,16 @@ final class Main
 
                 $routeInfo = $this->dispatcher->dispatch($r->method->value, $uri);
                 switch ($routeInfo[0]) {
-                    case Dispatcher::NOT_FOUND: return new Response(404, ['Content-Type' => 'text/plain'], sprintf('Route %s not found', $uri));
-                    case Dispatcher::METHOD_NOT_ALLOWED: return new Response(405, ['Content-Type' => 'text/plain'], sprintf('Method %s not found', $r->method->value));
-                    case Dispatcher::FOUND: return $routeInfo[1]->callHandler($r, $routeInfo[2])->toHttpResponse();
+                    case Dispatcher::METHOD_NOT_ALLOWED:
+                        return new Response(405, ['Content-Type' => 'text/plain'], sprintf('Method %s not found', $r->method->value));
+
+                    case Dispatcher::FOUND:
+                        return $routeInfo[1]->callHandler($r, $routeInfo[2])->toHttpResponse();
+
+                    case Dispatcher::NOT_FOUND:
+                    default:
+                        return new Response(404, ['Content-Type' => 'text/plain'], sprintf('Route %s not found', $uri));
+
                 }
             }
         );
