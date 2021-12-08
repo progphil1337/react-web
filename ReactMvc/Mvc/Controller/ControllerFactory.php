@@ -17,7 +17,6 @@ final class ControllerFactory extends AbstractFactory
 
     public function __construct(private TwigEnvironment $twig)
     {
-
     }
 
     public function inject(AbstractController $controller): void

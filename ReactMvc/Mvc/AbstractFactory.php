@@ -15,8 +15,5 @@ abstract class AbstractFactory
 {
     abstract public function inject(AbstractController $controller): void;
 
-    public function getDependencies(): array
-    {
-        return [];
-    }
+    abstract public function getDependencies(): array;
 }
