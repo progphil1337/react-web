@@ -2,6 +2,7 @@
 
 namespace ReactMvc;
 
+use DateTime;
 use ReactMvc\Config\AbstractConfig;
 
 /**
@@ -37,7 +38,7 @@ final class Console
     public static function log(object $o, string $string): void
     {
         if (self::$config->get('Logging') === 'on') {
-            self::writeLine(sprintf('[LOG][%s] %s', get_class($o), $string));
+            self::writeLine(sprintf('[LOG][%s][%s] %s', get_class($o), DateTime::createFromFormat('U.u', microtime(true))->format('H:i:s.u'), $string));
         }
     }
 }
