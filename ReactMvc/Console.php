@@ -2,6 +2,8 @@
 
 namespace ReactMvc;
 
+use ReactMvc\Config\AbstractConfig;
+
 /**
  * Console
  *
@@ -13,6 +15,13 @@ final class Console
 {
     private function __construct()
     {
+    }
+
+    private static AbstractConfig $config;
+
+    public static function setConfig(AbstractConfig $config): void
+    {
+        self::$config = $config;
     }
 
     public static function write(string $string): void
@@ -27,6 +36,8 @@ final class Console
 
     public static function log(object $o, string $string): void
     {
-        self::writeLine(sprintf('[LOG][%s] %s', get_class($o), $string));
+        if (self::$config->get('Logging') === 'on') {
+            self::writeLine(sprintf('[LOG][%s] %s', get_class($o), $string));
+        }
     }
 }

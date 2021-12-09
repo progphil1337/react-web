@@ -41,6 +41,7 @@ final class Main
 
     private function __construct(private AbstractConfig $config)
     {
+        Console::setConfig($this->config);
     }
 
     public function run(): void
@@ -51,6 +52,7 @@ final class Main
 
     private function loadRoutes(string $routesFile)
     {
+        Console::log($this, 'Loading Routes');
         $routeHandler = new RouteHandler();
         $routeHandler->loadFromFile($routesFile);
 
@@ -68,6 +70,7 @@ final class Main
 
     private function loadFactories(): void
     {
+        Console::log($this, 'Loading Factories');
         RouteHandler::registerFactory($this->getControllerFactory());
     }
 
@@ -93,6 +96,7 @@ final class Main
 
     private function start(string $ip, int $port): void
     {
+        Console::log($this, 'Starting server');
         $uri = implode(':', [
             $ip,
             $port
@@ -109,6 +113,8 @@ final class Main
                     queryParams: $request->getQueryParams()
                 );
 
+                Console::log($this, sprintf('Incoming request %s %s (%s)', $r->method->value, $r->route, $r->uri));
+
                 $uri = $r->route;
                 if (false !== $pos = strpos($uri, '?')) {
                     $uri = substr($uri, 0, $pos);
@@ -116,18 +122,12 @@ final class Main
                 $uri = rawurldecode($uri);
 
                 $routeInfo = $this->dispatcher->dispatch($r->method->value, $uri);
-                switch ($routeInfo[0]) {
-                    case Dispatcher::METHOD_NOT_ALLOWED:
-                        return new Response(405, ['Content-Type' => 'text/plain'], sprintf('Method %s not found', $r->method->value));
 
-                    case Dispatcher::FOUND:
-                        return $routeInfo[1]->callHandler($r, $routeInfo[2])->toHttpResponse();
-
-                    case Dispatcher::NOT_FOUND:
-                    default:
-                        return new Response(404, ['Content-Type' => 'text/plain'], sprintf('Route %s not found', $uri));
-
-                }
+                return match ($routeInfo[0]) {
+                    Dispatcher::METHOD_NOT_ALLOWED => new Response(405, ['Content-Type' => 'text/plain'], sprintf('Method %s not found', $r->method->value)),
+                    Dispatcher::FOUND => $routeInfo[1]->callHandler($r, $routeInfo[2])->toHttpResponse(),
+                    default => new Response(404, ['Content-Type' => 'text/plain'], sprintf('Route %s not found', $uri)),
+                };
             }
         );
 

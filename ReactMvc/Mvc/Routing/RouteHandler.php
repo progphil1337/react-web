@@ -30,6 +30,8 @@ final class RouteHandler
     public function loadFromFile(string $file): BasicActionEnum
     {
 
+        Console::log(new self, sprintf('Loading routes from %s', $file));
+
         if (!file_exists($file)) {
             throw new RoutesFileNotFoundException(sprintf('Routes file %s not found', $file));
         }
@@ -41,6 +43,8 @@ final class RouteHandler
                 handler: $handler,
                 httpMethods: array_map(fn(string $method): MethodEnum => MethodEnum::from(strtoupper($method)), $info['methods'])
             );
+
+            Console::log(new self, sprintf('Registering route %s (%s) with handler %s', $route->route, implode(', ', $info['methods']), $route->handler));
 
             $this->routes[] = $route;
         }
@@ -56,14 +60,12 @@ final class RouteHandler
         return $this->routes;
     }
 
-
     /**
      * @param Route $route
      * @return RouteAwareHandler|null
      */
     public static function getHandler(Route $route): ?RouteAwareHandler
     {
-
         return self::$loadedHandlers[$route->route] ?? null;
     }
 
@@ -76,6 +78,8 @@ final class RouteHandler
 
     public static function callHandler(string $handlerName, Route $route, MethodEnum $methodEnum, array $vars): AbstractResponse
     {
+        Console::log(new self, sprintf('Calling handler %s', $handlerName));
+
         $handler = self::getHandler($route);
 
         if ($handler === null) {
@@ -90,7 +94,7 @@ final class RouteHandler
             try {
                 $handler = $reflectionClass->newInstance();
             } catch (\ReflectionException $e) {
-                Console::log(new self(), $e->getMessage());
+                Console::log(new self, $e->getMessage());
             }
 
             /** @var AbstractFactory $factory */

@@ -2,6 +2,7 @@
 
 namespace ReactMvc\Mvc\Controller;
 
+use ReactMvc\Console;
 use ReactMvc\Mvc\AbstractFactory;
 use Twig\Environment as TwigEnvironment;
 
@@ -22,6 +23,7 @@ final class ControllerFactory extends AbstractFactory
     public function inject(AbstractController $controller): void
     {
         if (!$controller->isCreated()) {
+            Console::log($this, sprintf('Create controller %s', get_class($controller)));
             $controller->create(
                 twig: $this->twig
             );
