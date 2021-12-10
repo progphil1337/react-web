@@ -8,6 +8,7 @@ use React\Http\HttpServer;
 use React\Http\Message\Response;
 use React\Socket\SocketServer;
 use ReactMvc\Config\AbstractConfig;
+use ReactMvc\Logger\Logger;
 use ReactMvc\Mvc\Controller\ControllerFactory;
 use ReactMvc\Mvc\Http\Header;
 use ReactMvc\Mvc\Http\MethodEnum;
@@ -41,7 +42,7 @@ final class Main
 
     private function __construct(private AbstractConfig $config)
     {
-        Console::setConfig($this->config);
+        Logger::setConfig($this->config);
     }
 
     public function run(): void
@@ -52,7 +53,7 @@ final class Main
 
     private function loadRoutes(string $routesFile)
     {
-        Console::log($this, 'Loading Routes');
+        Logger::log($this, 'Loading Routes');
         $routeHandler = new RouteHandler();
         $routeHandler->loadFromFile($routesFile);
 
@@ -70,7 +71,7 @@ final class Main
 
     private function loadFactories(): void
     {
-        Console::log($this, 'Loading Factories');
+        Logger::log($this, 'Loading Factories');
         RouteHandler::registerFactory($this->getControllerFactory());
     }
 
@@ -96,7 +97,7 @@ final class Main
 
     private function start(string $ip, int $port): void
     {
-        Console::log($this, 'Starting server');
+        Logger::log($this, 'Starting server');
         $uri = implode(':', [
             $ip,
             $port
@@ -113,7 +114,7 @@ final class Main
                     queryParams: $request->getQueryParams()
                 );
 
-                Console::log($this, sprintf('Incoming request %s %s (%s)', $r->method->value, $r->route, $r->uri));
+                Logger::log($this, sprintf('Incoming request %s %s (%s)', $r->method->value, $r->route, $r->uri));
 
                 $uri = $r->route;
                 if (false !== $pos = strpos($uri, '?')) {
@@ -133,7 +134,7 @@ final class Main
 
         $socketServer = new SocketServer($uri);
 
-        Console::log($this, sprintf('Server running on %s', $uri));
+        Logger::log($this, sprintf('Server running on %s', $uri));
         $httpServer->listen($socketServer);
     }
 }

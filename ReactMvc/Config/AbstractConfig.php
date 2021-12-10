@@ -6,7 +6,6 @@ use ReactMvc\Config\Exception\ConfigFileNotFoundException;
 use ReactMvc\Config\Exception\ConfigFileNotInterpretableException;
 use ReactMvc\Config\Exception\ConfigTypeNotSupportedException;
 use ReactMvc\Config\Exception\UnableToCreateConfigException;
-use ReactMvc\Enum\BasicActionEnum;
 
 /**
  * AbstractConfig

@@ -2,7 +2,7 @@
 
 namespace ReactMvc\Mvc\Routing;
 
-use ReactMvc\Console;
+use ReactMvc\Logger\Logger;
 use ReactMvc\Enum\BasicActionEnum;
 use ReactMvc\Mvc\AbstractFactory;
 use ReactMvc\Mvc\Http\MethodEnum;
@@ -30,7 +30,7 @@ final class RouteHandler
     public function loadFromFile(string $file): BasicActionEnum
     {
 
-        Console::log(new self, sprintf('Loading routes from %s', $file));
+        Logger::log(new self, sprintf('Loading routes from %s', $file));
 
         if (!file_exists($file)) {
             throw new RoutesFileNotFoundException(sprintf('Routes file %s not found', $file));
@@ -44,7 +44,7 @@ final class RouteHandler
                 httpMethods: array_map(fn(string $method): MethodEnum => MethodEnum::from(strtoupper($method)), $info['methods'])
             );
 
-            Console::log(new self, sprintf('Registering route %s (%s) with handler %s', $route->route, implode(', ', $info['methods']), $route->handler));
+            Logger::log(new self, sprintf('Registering route %s (%s) with handler %s', $route->route, implode(', ', $info['methods']), $route->handler));
 
             $this->routes[] = $route;
         }
@@ -78,7 +78,7 @@ final class RouteHandler
 
     public static function callHandler(string $handlerName, Route $route, MethodEnum $methodEnum, array $vars): AbstractResponse
     {
-        Console::log(new self, sprintf('Calling handler %s', $handlerName));
+        Logger::log(new self, sprintf('Calling handler %s', $handlerName));
 
         $handler = self::getHandler($route);
 
@@ -87,14 +87,14 @@ final class RouteHandler
             try {
                 $reflectionClass = new \ReflectionClass($classPath);
             } catch (\ReflectionException $e) {
-                Console::log(new self(), $e->getMessage());
+                Logger::log(new self(), $e->getMessage());
             }
 
             /** @var RouteAwareHandler $handler */
             try {
                 $handler = $reflectionClass->newInstance();
             } catch (\ReflectionException $e) {
-                Console::log(new self, $e->getMessage());
+                Logger::log(new self, $e->getMessage());
             }
 
             /** @var AbstractFactory $factory */

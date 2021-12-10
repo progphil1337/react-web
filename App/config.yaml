@@ -2,4 +2,9 @@ HttpServer:
   port: 80
   ip: 127.0.0.1
 Routes: 'routes.yaml'
-Logging: 'on'
+Logging:
+  enabled: 1
+  show_time: 1
+  show_class: 1
+  mode: 2 #1 = console, 2 = file, 3 = both
+  log_file: 'console.log'
