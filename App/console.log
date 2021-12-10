@@ -1,9 +1,11 @@
-[LOG][ReactMvc\Main][09:05:06.633800] Loading Routes
-[LOG][ReactMvc\Mvc\Routing\RouteHandler][09:05:06.636000] Loading routes from C:\react-mvc\App\..\App\routes.yaml
-[LOG][ReactMvc\Mvc\Routing\RouteHandler][09:05:06.637800] Registering route /test (GET) with handler Controller\TestController
-[LOG][ReactMvc\Main][09:05:06.640300] Loading Factories
-[LOG][ReactMvc\Main][09:05:06.646700] Starting server
-[LOG][ReactMvc\Main][09:05:06.652900] Server running on 127.0.0.1:80
-[LOG][ReactMvc\Main][09:05:08.379800] Incoming request GET /test (http://127.0.0.1/test)
-[LOG][ReactMvc\Mvc\Routing\RouteHandler][09:05:08.380500] Calling handler Controller\TestController
-[LOG][ReactMvc\Mvc\Controller\ControllerFactory][09:05:08.382300] Create controller App\Controller\TestController
+[LOG][ReactMvc\Main][09:17:32.967100] Loading Routes
+[LOG][ReactMvc\Mvc\Routing\RouteHandler][09:17:32.968300] Loading routes from C:\react-mvc\App\..\App\routes.yaml
+[LOG][ReactMvc\Mvc\Routing\RouteHandler][09:17:32.970800] Registering route /test (GET) with handler Controller\TestController
+[LOG][ReactMvc\Main][09:17:32.973600] Loading Factories
+[LOG][ReactMvc\Main][09:17:32.978700] Starting server
+[LOG][ReactMvc\Main][09:17:32.984900] Server running on 127.0.0.1:80
+[LOG][ReactMvc\Main][09:17:34.756600] Incoming request GET /test (http://127.0.0.1/test)
+[LOG][ReactMvc\Mvc\Routing\RouteHandler][09:17:34.757500] Calling handler Controller\TestController
+[LOG][ReactMvc\Mvc\Controller\ControllerFactory][09:17:34.759400] Create controller App\Controller\TestController
+[LOG][ReactMvc\Main][09:17:35.445300] Incoming request GET /test (http://127.0.0.1/test)
+[LOG][ReactMvc\Mvc\Routing\RouteHandler][09:17:35.446500] Calling handler Controller\TestController

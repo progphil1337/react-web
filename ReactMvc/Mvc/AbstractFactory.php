@@ -13,7 +13,14 @@ use ReactMvc\Mvc\Controller\AbstractController;
  */
 abstract class AbstractFactory
 {
+    /**
+     * @param AbstractController $controller
+     * @return void
+     */
     abstract public function inject(AbstractController $controller): void;
 
+    /**
+     * @return array
+     */
     abstract public function getDependencies(): array;
 }

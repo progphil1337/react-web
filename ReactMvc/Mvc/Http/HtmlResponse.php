@@ -12,7 +12,9 @@ namespace ReactMvc\Mvc\Http;
 class HtmlResponse extends AbstractResponse
 {
 
-
+    /**
+     * @return string
+     */
     protected function getContentType(): string
     {
         return 'text/html';

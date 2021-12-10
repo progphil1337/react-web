@@ -16,10 +16,17 @@ use Twig\Environment as TwigEnvironment;
 final class ControllerFactory extends AbstractFactory
 {
 
+    /**
+     * @param TwigEnvironment $twig
+     */
     public function __construct(private TwigEnvironment $twig)
     {
     }
 
+    /**
+     * @param AbstractController $controller
+     * @return void
+     */
     public function inject(AbstractController $controller): void
     {
         if (!$controller->isCreated()) {
@@ -30,6 +37,9 @@ final class ControllerFactory extends AbstractFactory
         }
     }
 
+    /**
+     * @return string[]
+     */
     public function getDependencies(): array
     {
         return [

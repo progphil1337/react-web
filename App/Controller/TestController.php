@@ -17,6 +17,15 @@ use ReactMvc\Mvc\Routing\RouteAwareHandler;
  */
 class TestController extends AbstractController implements RouteAwareHandler
 {
+    /**
+     * @param string $route
+     * @param MethodEnum $methodEnum
+     * @param array $vars
+     * @return AbstractResponse
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function call(string $route, MethodEnum $methodEnum, array $vars): AbstractResponse
     {
         return $this->render('test');

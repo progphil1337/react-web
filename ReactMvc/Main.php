@@ -10,6 +10,7 @@ use React\Socket\SocketServer;
 use ReactMvc\Config\AbstractConfig;
 use ReactMvc\Logger\Logger;
 use ReactMvc\Mvc\Controller\ControllerFactory;
+use ReactMvc\Mvc\Http\ExceptionResponse;
 use ReactMvc\Mvc\Http\Header;
 use ReactMvc\Mvc\Http\MethodEnum;
 use ReactMvc\Mvc\Http\Request;
@@ -28,6 +29,10 @@ final class Main
 {
     private static ?self $instance = null;
 
+    /**
+     * @param AbstractConfig $config
+     * @return static
+     */
     public static function create(AbstractConfig $config): self
     {
 
@@ -40,18 +45,30 @@ final class Main
 
     private Dispatcher $dispatcher;
 
+    /**
+     * @param AbstractConfig $config
+     */
     private function __construct(private AbstractConfig $config)
     {
         Logger::setConfig($this->config);
     }
 
+    /**
+     * @return void
+     * @throws Mvc\Routing\Exception\RoutesFileNotFoundException
+     */
     public function run(): void
     {
         $this->loadRoutes(APP_PATH . $this->config->get('Routes'));
         $this->start($this->config->get('HttpServer::ip'), (int)$this->config->get('HttpServer::port'));
     }
 
-    private function loadRoutes(string $routesFile)
+    /**
+     * @param string $routesFile
+     * @return void
+     * @throws Mvc\Routing\Exception\RoutesFileNotFoundException
+     */
+    private function loadRoutes(string $routesFile): void
     {
         Logger::log($this, 'Loading Routes');
         $routeHandler = new RouteHandler();
@@ -75,6 +92,9 @@ final class Main
         RouteHandler::registerFactory($this->getControllerFactory());
     }
 
+    /**
+     * @return TwigEnvironment
+     */
     private function getTwigEnvironment(): TwigEnvironment
     {
         $loader = new TwigFilesystemLoader(APP_PATH . 'View');
@@ -95,6 +115,11 @@ final class Main
         );
     }
 
+    /**
+     * @param string $ip
+     * @param int $port
+     * @return void
+     */
     private function start(string $ip, int $port): void
     {
         Logger::log($this, 'Starting server');
@@ -124,11 +149,15 @@ final class Main
 
                 $routeInfo = $this->dispatcher->dispatch($r->method->value, $uri);
 
-                return match ($routeInfo[0]) {
-                    Dispatcher::METHOD_NOT_ALLOWED => new Response(405, ['Content-Type' => 'text/plain'], sprintf('Method %s not found', $r->method->value)),
-                    Dispatcher::FOUND => $routeInfo[1]->callHandler($r, $routeInfo[2])->toHttpResponse(),
-                    default => new Response(404, ['Content-Type' => 'text/plain'], sprintf('Route %s not found', $uri)),
-                };
+                try {
+                    return match ($routeInfo[0]) {
+                        Dispatcher::METHOD_NOT_ALLOWED => new Response(405, ['Content-Type' => 'text/plain'], sprintf('Method %s not found', $r->method->value)),
+                        Dispatcher::FOUND => $routeInfo[1]->callHandler($r, $routeInfo[2])->toHttpResponse(),
+                        default => new Response(404, ['Content-Type' => 'text/plain'], sprintf('Route %s not found', $uri)),
+                    };
+                } catch(\Exception $e) {
+                    return (new ExceptionResponse($e))->toHttpResponse();
+                }
             }
         );
 

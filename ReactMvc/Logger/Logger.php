@@ -20,6 +20,10 @@ final class Logger
 
     private static array $config;
 
+    /**
+     * @param AbstractConfig $config
+     * @return void
+     */
     public static function setConfig(AbstractConfig $config): void
     {
         self::$config = $config->get('Logging');
@@ -34,16 +38,29 @@ final class Logger
         }
     }
 
+    /**
+     * @param string $string
+     * @return void
+     */
     public static function write(string $string): void
     {
         echo $string;
     }
 
+    /**
+     * @param string $string
+     * @return void
+     */
     public static function writeLine(string $string): void
     {
         self::write($string . PHP_EOL);
     }
 
+    /**
+     * @param object $o
+     * @param string $string
+     * @return void
+     */
     public static function log(object $o, string $string): void
     {
         if (self::$config['enabled'] !== 1) {

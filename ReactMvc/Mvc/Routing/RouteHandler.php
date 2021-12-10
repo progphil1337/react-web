@@ -19,9 +19,6 @@ use Symfony\Component\Yaml\Yaml;
  */
 final class RouteHandler
 {
-
-    private static array $loadedHandlers = [];
-
     private array $routes = [];
 
     /**
@@ -60,6 +57,9 @@ final class RouteHandler
         return $this->routes;
     }
 
+    private static array $factories = [];
+    private static array $loadedHandlers = [];
+
     /**
      * @param Route $route
      * @return RouteAwareHandler|null
@@ -69,13 +69,22 @@ final class RouteHandler
         return self::$loadedHandlers[$route->route] ?? null;
     }
 
-    private static array $factories = [];
-
+    /**
+     * @param AbstractFactory $factory
+     * @return void
+     */
     public static function registerFactory(AbstractFactory $factory): void
     {
         self::$factories[] = $factory;
     }
 
+    /**
+     * @param string $handlerName
+     * @param Route $route
+     * @param MethodEnum $methodEnum
+     * @param array $vars
+     * @return AbstractResponse
+     */
     public static function callHandler(string $handlerName, Route $route, MethodEnum $methodEnum, array $vars): AbstractResponse
     {
         Logger::log(new self, sprintf('Calling handler %s', $handlerName));
@@ -112,6 +121,11 @@ final class RouteHandler
         return $handler->call($route->route, $methodEnum, $vars);
     }
 
+    /**
+     * @param Route $route
+     * @param RouteAwareHandler $handler
+     * @return void
+     */
     private static function cacheHandler(Route $route, RouteAwareHandler $handler): void
     {
         self::$loadedHandlers[$route->route] = $handler;

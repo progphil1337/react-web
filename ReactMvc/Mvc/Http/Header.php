@@ -11,12 +11,19 @@ namespace ReactMvc\Mvc\Http;
  */
 final class Header
 {
+    /**
+     * @param array $data
+     */
     public function __construct(
         private readonly array $data
     )
     {
     }
 
+    /**
+     * @param string $name
+     * @return mixed
+     */
     public function get(string $name): mixed
     {
         $data = $this->data[$name] ?? null;
@@ -32,6 +39,10 @@ final class Header
         return $this->data[$name];
     }
 
+    /**
+     * @param string $name
+     * @return mixed
+     */
     public function __get(string $name): mixed
     {
         return $this->get($name);

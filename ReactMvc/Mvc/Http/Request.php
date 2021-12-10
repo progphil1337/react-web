@@ -12,6 +12,13 @@ namespace ReactMvc\Mvc\Http;
 final class Request
 {
 
+    /**
+     * @param string $uri
+     * @param string $route
+     * @param MethodEnum $method
+     * @param Header $header
+     * @param array $queryParams
+     */
     public function __construct(
         public readonly string $uri,
         public readonly string $route,

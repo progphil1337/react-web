@@ -14,11 +14,19 @@ use Symfony\Component\Yaml\Yaml;
 final class YamlConfigInterpreter implements ConfigInterpreter
 {
 
+    /**
+     * @param string $file
+     * @return array
+     */
     public function fromFile(string $file): array
     {
         return $this->parse(file_get_contents($file));
     }
 
+    /**
+     * @param string $content
+     * @return array
+     */
     public function parse(string $content): array
     {
         // lets use symfonys component.. cuz we're lazy
