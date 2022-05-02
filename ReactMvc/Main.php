@@ -28,6 +28,7 @@ use Twig\Loader\FilesystemLoader as TwigFilesystemLoader;
 final class Main
 {
     private static ?self $instance = null;
+    private readonly Dispatcher $dispatcher;
 
     /**
      * @param AbstractConfig $config
@@ -42,8 +43,6 @@ final class Main
 
         return self::$instance;
     }
-
-    private Dispatcher $dispatcher;
 
     /**
      * @param AbstractConfig $config

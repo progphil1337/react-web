@@ -24,6 +24,7 @@ class Session
      * @param \DateTime $created
      * @param \DateTime $expires
      * @param \ReactMvc\Session\SessionManager $manager
+     * @param bool $initialWrite
      */
     public function __construct(
         public  readonly int $id,
@@ -32,7 +33,7 @@ class Session
         public  readonly \DateTime $created,
         public  readonly \DateTime $expires,
         private readonly SessionManager $manager,
-        bool    $initialWrite = false
+                readonly bool $initialWrite = false
     )
     {
         $this->filePath = $this->manager->getFilePath($file);
@@ -43,6 +44,10 @@ class Session
         }
     }
 
+    /**
+     * @param string $key
+     * @return mixed
+     */
     public function get(string $key): mixed
     {
         if ($this->metaData === null) {
@@ -52,6 +57,11 @@ class Session
         return $this->metaData[$key];
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @return $this
+     */
     public function set(string $key, mixed $value): self
     {
         $this->metaData[$key] = $value;
@@ -59,13 +69,24 @@ class Session
         return $this;
     }
 
+    /**
+     * @return void
+     */
     private function read(): void
     {
         $this->metaData = json_decode(base64_decode(file_get_contents($this->filePath)), true);
     }
 
+    /**
+     * @return bool
+     */
     public function save(): bool
     {
         return (bool)file_put_contents($this->filePath, base64_encode(json_encode($this->metaData)));
+    }
+
+    public function __destruct()
+    {
+        $this->save();
     }
 }
