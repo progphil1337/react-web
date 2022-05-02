@@ -95,7 +95,7 @@ final class SessionManager
             $this->collector->add($session);
         }
 
-        if ($session->expires < new DateTime('+ 40min')) {
+        if ($session->expires < new DateTime()) {
 
             $statement = $this->database->prepare('DELETE FROM `session` WHERE `hash` = :hash');
             $statement->bindValue(':hash', $hash);
