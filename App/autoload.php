@@ -4,6 +4,12 @@ define('PROJECT_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTOR
 
 require_once PROJECT_PATH . 'vendor/autoload.php';
 
+
+const PROJECT_NAMESPACES = [
+    'ReactMvc',
+    'App'
+];
+
 /**
  * Autoloader
  * Implement needed classes automatically
@@ -11,6 +17,10 @@ require_once PROJECT_PATH . 'vendor/autoload.php';
 spl_autoload_register(
     function (string $className): void {
         $namespace = explode('\\', $className);
+
+        if (!in_array($namespace[0], PROJECT_NAMESPACES)) {
+            return;
+        }
 
         $filePath = DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $namespace) . '.php';
 

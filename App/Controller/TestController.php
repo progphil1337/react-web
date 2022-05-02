@@ -5,7 +5,6 @@ namespace App\Controller;
 use ReactMvc\Mvc\Controller\AbstractController;
 use ReactMvc\Mvc\Http\HtmlResponse;
 use ReactMvc\Mvc\Http\MethodEnum;
-use ReactMvc\Mvc\Http\AbstractResponse;
 use ReactMvc\Mvc\Routing\RouteAwareHandler;
 
 /**
@@ -21,12 +20,12 @@ class TestController extends AbstractController implements RouteAwareHandler
      * @param string $route
      * @param MethodEnum $methodEnum
      * @param array $vars
-     * @return AbstractResponse
+     * @return \ReactMvc\Mvc\Http\HtmlResponse
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function call(string $route, MethodEnum $methodEnum, array $vars): AbstractResponse
+    public function call(string $route, MethodEnum $methodEnum, array $vars): HtmlResponse
     {
         return $this->render('test');
     }

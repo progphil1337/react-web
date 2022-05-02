@@ -8,3 +8,6 @@ Logging:
   show_class: 1
   mode: 3 #1 = console, 2 = file, 3 = both
   log_file: 'console.log'
+Session:
+  file: 'data/session/'
+  lifetime: PT30M #30min

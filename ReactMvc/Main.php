@@ -48,7 +48,7 @@ final class Main
     /**
      * @param AbstractConfig $config
      */
-    private function __construct(private AbstractConfig $config)
+    private function __construct(private readonly AbstractConfig $config)
     {
         Logger::setConfig($this->config);
     }
@@ -98,11 +98,9 @@ final class Main
     private function getTwigEnvironment(): TwigEnvironment
     {
         $loader = new TwigFilesystemLoader(APP_PATH . 'View');
-        $twig = new TwigEnvironment(
+        return new TwigEnvironment(
             $loader
         );
-
-        return $twig;
     }
 
     /**
