@@ -6,8 +6,11 @@ use ReactMvc\DependencyInjection\Injector;
 use ReactMvc\Logger\Logger;
 use ReactMvc\Enum\BasicActionEnum;
 use ReactMvc\Mvc\Controller\AbstractController;
+use ReactMvc\Mvc\Http\HtmlResponse;
 use ReactMvc\Mvc\Http\MethodEnum;
 use ReactMvc\Mvc\Http\AbstractResponse;
+use ReactMvc\Mvc\Http\Request;
+use ReactMvc\Mvc\Http\TextResponse;
 use ReactMvc\Mvc\Routing\Exception\RoutesFileNotFoundException;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
@@ -53,7 +56,8 @@ final class RouteHandler
             $route = new Route(
                 route: strtolower($info['route']),
                 handler: $handler,
-                httpMethods: array_map(fn(string $method): MethodEnum => MethodEnum::from(strtoupper($method)), $info['methods'])
+                httpMethods: array_map(fn(string $method): MethodEnum => MethodEnum::from(strtoupper($method)), $info['methods']),
+                middlewares: $info['middleware'] ?? []
             );
 
             Logger::debug(RouteHandler::class, sprintf('Registering route %s (%s) with handler %s', $route->route, implode(', ', $info['methods']), $route->handler));
@@ -85,11 +89,11 @@ final class RouteHandler
     /**
      * @param string $handlerName
      * @param Route $route
-     * @param MethodEnum $methodEnum
+     * @param Request $request
      * @param array $vars
      * @return AbstractResponse
      */
-    public static function callHandler(string $handlerName, Route $route, MethodEnum $methodEnum, array $vars): AbstractResponse
+    public static function callHandler(string $handlerName, Route $route, Request $request, array $vars): AbstractResponse
     {
         Logger::debug(RouteHandler::class, sprintf('Calling handler %s', $handlerName));
 
@@ -103,7 +107,6 @@ final class RouteHandler
             /** @var \ReactMvc\Mvc\Routing\RouteAwareHandler $handler */
             $handler = self::$injector->create($classPath);
 
-
             if ($handler instanceof AbstractController) {
 
                 $handler->createInstance(self::$injector->create(Environment::class));
@@ -112,7 +115,22 @@ final class RouteHandler
             self::cacheHandler($route, $handler);
         }
 
-        return $handler->call($route->route, $methodEnum, $vars);
+        foreach ($route->middlewares as $className) {
+            /** @var \ReactMvc\Middleware\Middleware $middleware */
+            $middleware = self::$injector->create($className, [
+                'createInstance' => [$request]
+            ]);
+
+            $success = $middleware->run();
+
+            if (!$success) {
+                Logger::error(RouteHandler::class, 'Middleware not successful');
+
+                return new HtmlResponse('Not authorized');
+            }
+        }
+
+        return $handler->call($route->route, $request, $vars);
     }
 
     /**

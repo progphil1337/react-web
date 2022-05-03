@@ -23,7 +23,7 @@ class Session
      * @param string $file
      * @param \DateTime $created
      * @param \DateTime $expires
-     * @param \ReactMvc\Session\SessionManager $manager
+     * @param \ReactMvc\Session\Manager $manager
      * @param bool $initialWrite
      */
     public function __construct(
@@ -32,7 +32,7 @@ class Session
         public  readonly string $file,
         public  readonly \DateTime $created,
         public  readonly \DateTime $expires,
-        private readonly SessionManager $manager,
+        private readonly Manager $manager,
                 readonly bool $initialWrite = false
     )
     {

@@ -17,9 +17,27 @@ abstract class AbstractResponse
     /**
      * @param string $content
      * @param int $code
-     * @param string $charset
+     * @param array $header
      */
-    public function __construct(private readonly string $content, private readonly int $code = 200, private readonly string $charset = 'utf-8') {}
+    public function __construct(
+        private       readonly string $content,
+        private       readonly int $code = 200,
+        private array $header = ['charset' => 'utf-8']
+    )
+    {
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @return $this
+     */
+    public function writeHeader(string $key, mixed $value): self
+    {
+        $this->header[$key] = $value;
+
+        return $this;
+    }
 
     /**
      * @return string
@@ -31,9 +49,8 @@ abstract class AbstractResponse
      */
     public function toHttpResponse(): HttpResponse
     {
-        return new HttpResponse($this->code, [
-            'Content-Type' => $this->getContentType(),
-            'charset' => $this->charset
-        ], $this->content);
+        $this->writeHeader('Content-Type', $this->getContentType());
+
+        return new HttpResponse($this->code, $this->header, $this->content);
     }
 }

@@ -18,11 +18,13 @@ final class Route
      * @param string $route
      * @param string $handler
      * @param array $httpMethods
+     * @param array $middlewares
      */
     public function __construct(
         public readonly string $route,
         public readonly string $handler,
-        public readonly array $httpMethods
+        public readonly array $httpMethods,
+        public readonly array $middlewares
     )
     {
     }
@@ -31,10 +33,9 @@ final class Route
      * @param Request $request
      * @param array $vars
      * @return AbstractResponse
-     * @throws \ReflectionException
      */
     public function callHandler(Request $request, array $vars): AbstractResponse
     {
-        return RouteHandler::callHandler($this->handler, $this, $request->method, $vars);
+        return RouteHandler::callHandler($this->handler, $this, $request, $vars);
     }
 }

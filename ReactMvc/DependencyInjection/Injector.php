@@ -21,14 +21,21 @@ final class Injector
     /** @var array<string, string> */
     private array $aliases = [];
 
+    /** @var array<string> */
+    private array $dismiss = [];
+
     /**
      * @param mixed $obj
      * @return $this
      */
     public function register(mixed $obj): self
     {
-        Logger::debug($this, 'Register ' . get_class($obj));
-        $this->lookup[get_class($obj)] = $obj;
+        $className = get_class($obj);
+
+        if (!array_key_exists($className, $this->dismiss)) {
+            Logger::debug($this, 'Register ' . $className);
+            $this->lookup[$className] = $obj;
+        }
 
         return $this;
     }
@@ -70,14 +77,25 @@ final class Injector
 
     /**
      * @param string $className
+     * @return $this
+     */
+    public function dismiss(string $className): self
+    {
+        $this->dismiss[$className] = true;
+
+        return $this;
+    }
+
+    /**
+     * @param string $className
+     * @param array $methods
      * @return object
      */
-    public function create(string $className): mixed
+    public function create(string $className, array $methods = []): mixed
     {
         $className = $this->getClassName($className);
 
         if (!$this->isRegistered($className)) {
-
             try {
                 $reflectionClass = new \ReflectionClass($className);
             } catch (\ReflectionException $e) {
@@ -106,13 +124,20 @@ final class Injector
 
             try {
                 $instance = $reflectionClass->newInstanceArgs($dependencies);
+
+                foreach ($methods as $method => $args) {
+                    call_user_func_array([$instance, $method], $args);
+                }
+
                 $this->register($instance);
             } catch (\ReflectionException $e) {
                 Logger::error($this, sprintf('Error creating reflection: %s', $e->getMessage()));
             }
+        } else {
+            $instance = $this->get($className);
         }
 
-        return $this->get($className);
+        return $instance;
     }
 
     /**

@@ -15,12 +15,13 @@ use ReactMvc\Mvc\Http\Request;
  */
 abstract class Middleware
 {
-
     private readonly Request $request;
 
-    private function setRequest(Request $request)
+    public function createInstance(Request $request): self
     {
         $this->request = $request;
+
+        return $this;
     }
 
     protected function getRequest(): Request

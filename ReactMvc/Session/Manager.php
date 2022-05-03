@@ -12,13 +12,13 @@ use RuntimeException;
 use SQLite3;
 
 /**
- * SessionManager
+ * Manager
  *
  * @package ReactMvc\Session
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
-final class SessionManager
+final class Manager
 {
     private const DATABASE_NAME = 'session.sqlite';
 
@@ -26,7 +26,7 @@ final class SessionManager
     private readonly string $filePath;
     private SQLite3 $database;
     private bool $open = false;
-    private readonly SessionCollector $collector;
+    private readonly Collector $collector;
 
     /**
      * @param \ReactMvc\Config\AbstractConfig $config
@@ -39,7 +39,7 @@ final class SessionManager
             $this->createDatabase();
         }
 
-        $this->collector = new SessionCollector();
+        $this->collector = new Collector();
     }
 
     /**
@@ -74,12 +74,13 @@ final class SessionManager
         if ($this->collector->has($hash)) {
             $session = $this->collector->get($hash);
         } else {
+
             $statement = $this->database->prepare('SELECT * FROM `session` WHERE `hash` = :hash');
             $statement->bindValue(':hash', $hash);
-
             $result = $statement->execute();
             $data = $result->fetchArray();
-            if (count($data) === 0) {
+
+            if ($data === false) {
                 return null;
             }
 
@@ -96,14 +97,12 @@ final class SessionManager
         }
 
         if ($session->expires < new DateTime()) {
+            unlink($this->getFilePath($session->file));
+            $this->collector->remove($hash);
 
             $statement = $this->database->prepare('DELETE FROM `session` WHERE `hash` = :hash');
             $statement->bindValue(':hash', $hash);
             $statement->execute();
-
-            $this->collector->remove($hash);
-
-            unlink($this->getFilePath($session->file));
 
             unset($session);
 
@@ -202,12 +201,5 @@ CREATE TABLE `session` (
 SQL
         );
 
-    }
-
-    public static function getDependencies(): array
-    {
-        return [
-            AbstractConfig::class
-        ];
     }
 }

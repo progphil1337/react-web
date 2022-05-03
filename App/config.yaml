@@ -13,4 +13,4 @@ Session:
   file: 'data/session/'
   lifetime: PT30M #30min
   use_cookie: true
-  cookie_name: 'session_id'
+  key: 'session_id'

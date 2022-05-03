@@ -14,4 +14,11 @@ $injector
     ->register(new TwigEnvironment(
         new TwigFilesystemLoader(APP_PATH . 'View')
     ))
+    ->dismiss(\ReactMvc\Session\Middleware::class)
 ;
+
+/** @var \ReactMvc\Session\Manager $sessionManager */
+$sessionManager = $injector->create(\ReactMvc\Session\Manager::class);
+$sessionManager->open();
+
+$injector->register($sessionManager);

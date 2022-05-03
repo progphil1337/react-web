@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace ReactMvc\Session;
 
 /**
- * SessionCollector
+ * Collector
  *
  * @package ReactMvc\Session
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
-final class SessionCollector
+final class Collector
 {
 
     /** @var array<\ReactMvc\Session\Session> */
