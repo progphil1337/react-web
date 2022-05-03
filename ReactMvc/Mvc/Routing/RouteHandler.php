@@ -121,12 +121,16 @@ final class RouteHandler
                 'createInstance' => [$request]
             ]);
 
-            $success = $middleware->run();
+            $result = $middleware->run();
 
-            if (!$success) {
+            if ($result instanceof BasicActionEnum && $result !== BasicActionEnum::SUCCESS) {
                 Logger::error(RouteHandler::class, 'Middleware not successful');
 
-                return new HtmlResponse('Not authorized');
+                return new TextResponse('Not authorized');
+            }
+
+            if ($result instanceof AbstractResponse) {
+                return $result;
             }
         }
 

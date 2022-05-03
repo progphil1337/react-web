@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace ReactMvc\Session;
 
+use ReactMvc\Enum\BasicActionEnum;
 use ReactMvc\Logger\Logger;
 use ReactMvc\Middleware\Middleware as AbstractMiddleware;
 use ReactMvc\Config\AbstractConfig;
+use ReactMvc\Mvc\Http\AbstractResponse;
+use ReactMvc\Mvc\Http\RedirectResponse;
 
 /**
  * Middleware
@@ -29,14 +32,14 @@ class Middleware extends AbstractMiddleware
     }
 
     /**
-     * @return bool
+     * @return \ReactMvc\Enum\BasicActionEnum|\ReactMvc\Mvc\Http\AbstractResponse
      */
-    public function run(): bool
+    public function run(): BasicActionEnum|AbstractResponse
     {
         $cookies = $this->getRequest()->cookies;
 
         if (!array_key_exists($this->key, $cookies)) {
-            return false;
+            return new RedirectResponse('/');
         }
 
         $session = null;
@@ -44,12 +47,17 @@ class Middleware extends AbstractMiddleware
         try {
             $session = $this->sessionManager->getByHash($cookies[$this->key]);
         } catch (\Exception $e) {
-
             Logger::error($this, $e->getMessage());
+        }
+
+        if ($session === null) {
+            $response = new RedirectResponse('/');
+            $response->writeHeader('Set-Cookie', 'expired; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT');
+            return $response;
         }
 
         $this->getRequest()->setSession($session);
 
-        return $session !== null;
+        return BasicActionEnum::SUCCESS;
     }
 }

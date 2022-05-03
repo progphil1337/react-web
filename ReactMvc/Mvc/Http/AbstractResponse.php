@@ -40,16 +40,18 @@ abstract class AbstractResponse
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    abstract protected function getContentType(): string;
+    abstract protected function getContentType(): ?string;
 
     /**
      * @return HttpResponse
      */
     public function toHttpResponse(): HttpResponse
     {
-        $this->writeHeader('Content-Type', $this->getContentType());
+        if ($this->getContentType() !== null) {
+            $this->writeHeader('Content-Type', $this->getContentType());
+        }
 
         return new HttpResponse($this->code, $this->header, $this->content);
     }
