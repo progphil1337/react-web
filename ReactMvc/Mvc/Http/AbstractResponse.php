@@ -19,7 +19,7 @@ abstract class AbstractResponse
      * @param int $code
      * @param string $charset
      */
-    public function __construct(private string $content, private int $code = 200, private string $charset = 'utf-8') {}
+    public function __construct(private readonly string $content, private readonly int $code = 200, private readonly string $charset = 'utf-8') {}
 
     /**
      * @return string

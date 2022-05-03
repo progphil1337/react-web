@@ -2,13 +2,15 @@
 
 namespace ReactMvc\Mvc\Routing;
 
+use ReactMvc\DependencyInjection\Injector;
 use ReactMvc\Logger\Logger;
 use ReactMvc\Enum\BasicActionEnum;
-use ReactMvc\Mvc\AbstractFactory;
+use ReactMvc\Mvc\Controller\AbstractController;
 use ReactMvc\Mvc\Http\MethodEnum;
 use ReactMvc\Mvc\Http\AbstractResponse;
 use ReactMvc\Mvc\Routing\Exception\RoutesFileNotFoundException;
 use Symfony\Component\Yaml\Yaml;
+use Twig\Environment;
 
 /**
  * RouteHandler
@@ -19,15 +21,28 @@ use Symfony\Component\Yaml\Yaml;
  */
 final class RouteHandler
 {
+    /** @var array<\ReactMvc\Mvc\Routing\Route> */
     private array $routes = [];
+
+    private static Injector $injector;
+
+    /** @var array<string, \ReactMvc\Mvc\Routing\RouteAwareHandler> */
+    private static array $loadedHandlers = [];
+
+    /**
+     * @param \ReactMvc\DependencyInjection\Injector $injector
+     */
+    public function __construct(Injector $injector)
+    {
+        self::$injector = $injector;
+    }
 
     /**
      * @throws RoutesFileNotFoundException
      */
     public function loadFromFile(string $file): BasicActionEnum
     {
-
-        Logger::log(new self, sprintf('Loading routes from %s', $file));
+        Logger::debug(RouteHandler::class, sprintf('Loading routes from %s', $file));
 
         if (!file_exists($file)) {
             throw new RoutesFileNotFoundException(sprintf('Routes file %s not found', $file));
@@ -41,7 +56,7 @@ final class RouteHandler
                 httpMethods: array_map(fn(string $method): MethodEnum => MethodEnum::from(strtoupper($method)), $info['methods'])
             );
 
-            Logger::log(new self, sprintf('Registering route %s (%s) with handler %s', $route->route, implode(', ', $info['methods']), $route->handler));
+            Logger::debug(RouteHandler::class, sprintf('Registering route %s (%s) with handler %s', $route->route, implode(', ', $info['methods']), $route->handler));
 
             $this->routes[] = $route;
         }
@@ -57,9 +72,6 @@ final class RouteHandler
         return $this->routes;
     }
 
-    private static array $factories = [];
-    private static array $loadedHandlers = [];
-
     /**
      * @param Route $route
      * @return RouteAwareHandler|null
@@ -69,14 +81,6 @@ final class RouteHandler
         return self::$loadedHandlers[$route->route] ?? null;
     }
 
-    /**
-     * @param AbstractFactory $factory
-     * @return void
-     */
-    public static function registerFactory(AbstractFactory $factory): void
-    {
-        self::$factories[] = $factory;
-    }
 
     /**
      * @param string $handlerName
@@ -87,32 +91,22 @@ final class RouteHandler
      */
     public static function callHandler(string $handlerName, Route $route, MethodEnum $methodEnum, array $vars): AbstractResponse
     {
-        Logger::log(new self, sprintf('Calling handler %s', $handlerName));
+        Logger::debug(RouteHandler::class, sprintf('Calling handler %s', $handlerName));
 
         $handler = self::getHandler($route);
 
+        // create RouteAwareHandler
         if ($handler === null) {
+
             $classPath = "App\\{$handlerName}";
-            try {
-                $reflectionClass = new \ReflectionClass($classPath);
-            } catch (\ReflectionException $e) {
-                Logger::log(new self(), $e->getMessage());
-            }
 
-            /** @var RouteAwareHandler $handler */
-            try {
-                $handler = $reflectionClass->newInstance();
-            } catch (\ReflectionException $e) {
-                Logger::log(new self, $e->getMessage());
-            }
+            /** @var \ReactMvc\Mvc\Routing\RouteAwareHandler $handler */
+            $handler = self::$injector->create($classPath);
 
-            /** @var AbstractFactory $factory */
-            foreach (self::$factories as $factory) {
-                foreach ($factory->getDependencies() as $dependency) {
-                    if ($handler instanceof $dependency) {
-                        $factory->inject($handler);
-                    }
-                }
+
+            if ($handler instanceof AbstractController) {
+
+                $handler->createInstance(self::$injector->create(Environment::class));
             }
 
             self::cacheHandler($route, $handler);
@@ -128,6 +122,7 @@ final class RouteHandler
      */
     private static function cacheHandler(Route $route, RouteAwareHandler $handler): void
     {
+        Logger::debug(RouteHandler::class, sprintf('Caching handler %s for route %s', get_class($handler), $route->route));
         self::$loadedHandlers[$route->route] = $handler;
     }
 }

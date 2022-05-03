@@ -185,7 +185,7 @@ final class SessionManager
      */
     private function createDatabase(): void
     {
-        Logger::log($this, 'Creating session database file');
+        Logger::debug($this, 'Creating session database file');
         fwrite(fopen($this->filePath, "wb"), '');
 
         $this->open();
@@ -202,5 +202,12 @@ CREATE TABLE `session` (
 SQL
         );
 
+    }
+
+    public static function getDependencies(): array
+    {
+        return [
+            AbstractConfig::class
+        ];
     }
 }

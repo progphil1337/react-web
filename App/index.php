@@ -3,10 +3,10 @@
 use ReactMvc\Config\BasicConfig;
 use ReactMvc\Config\Exception\ConfigFileNotFoundException;
 use ReactMvc\Config\Exception\ConfigFileNotInterpretableException;
+use ReactMvc\DependencyInjection\Injector;
 use ReactMvc\Enum\BasicActionEnum;
 use ReactMvc\Main;
 use ReactMvc\Mvc\Routing\Exception\RoutesFileNotFoundException;
-use ReactMvc\Session\SessionManager;
 
 require_once 'autoload.php';
 
@@ -19,10 +19,10 @@ try {
 
     $main = Main::create($config);
 
-    $sessionManager = new SessionManager($config);
-    $sessionManager->open();
+    $injector = new Injector();
+    require_once 'di_registry.php';
 
-    $main->run();
+    $main->run($injector);
 } catch (RoutesFileNotFoundException|ConfigFileNotFoundException|ConfigFileNotInterpretableException $e) {
     echo $e->getMessage();
 

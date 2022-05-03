@@ -1,7 +1,2 @@
-[LOG][ReactMvc\Session\SessionManager][09:56:22.875400] Creating session database file
-[LOG][ReactMvc\Main][09:56:22.886200] Loading Routes
-[LOG][ReactMvc\Mvc\Routing\RouteHandler][09:56:22.887100] Loading routes from C:\react-mvc\App\..\App\routes.yaml
-[LOG][ReactMvc\Mvc\Routing\RouteHandler][09:56:22.889000] Registering route /test (GET) with handler Controller\TestController
-[LOG][ReactMvc\Main][09:56:22.891800] Loading Factories
-[LOG][ReactMvc\Main][09:56:22.897100] Starting server
-[LOG][ReactMvc\Main][09:56:22.903800] Server running on 127.0.0.1:80
+[INFO][ReactMvc\Main][13:40:23.193600] Starting server
+[INFO][ReactMvc\Main][13:40:23.200300] Server running on 127.0.0.1:80

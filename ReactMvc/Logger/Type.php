@@ -3,13 +3,13 @@
 namespace ReactMvc\Logger;
 
 /**
- * LogType
+ * Type
  *
  * @package ReactMvc
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
-enum LogType: int
+enum Type: int
 {
     case CONSOLE = 1;
     case FILE = 2;

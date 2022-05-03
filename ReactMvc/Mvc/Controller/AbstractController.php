@@ -2,8 +2,13 @@
 
 namespace ReactMvc\Mvc\Controller;
 
+use ReactMvc\Mvc\Http\AbstractResponse;
+use ReactMvc\Mvc\Http\ExceptionResponse;
 use ReactMvc\Mvc\Http\HtmlResponse;
 use Twig\Environment as TwigEnvironment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * AbstractController
@@ -14,47 +19,28 @@ use Twig\Environment as TwigEnvironment;
  */
 abstract class AbstractController
 {
-    private bool $created = false;
+    private readonly TwigEnvironment $twig;
 
-    private TwigEnvironment $twig;
+    public function __construct() {
+        // needed for DI
+    }
 
-    /**
-     * @param TwigEnvironment $twig
-     * @return void
-     */
-    public function create(TwigEnvironment $twig): void
+    public function createInstance(TwigEnvironment $twig): void
     {
         $this->twig = $twig;
-
-        $this->created = true;
     }
 
     /**
      * @param string $template
      * @param array $args
-     * @return HtmlResponse
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @return AbstractResponse
      */
-    protected function render(string $template, array $args = []): HtmlResponse
+    protected function render(string $template, array $args = []): AbstractResponse
     {
-        return new HtmlResponse($this->twig->render("{$template}.twig", $args));
-    }
-
-    /**
-     * @return bool
-     */
-    public function isCreated(): bool
-    {
-        return $this->created;
-    }
-
-    /**
-     * @return TwigEnvironment
-     */
-    protected function getTwig(): TwigEnvironment
-    {
-        return $this->twig;
+        try {
+            return new HtmlResponse($this->twig->render("{$template}.twig", $args));
+        } catch (LoaderError|RuntimeError|SyntaxError $e) {
+            return new ExceptionResponse($e);
+        }
     }
 }

@@ -24,7 +24,7 @@ abstract class AbstractConfig
      * @throws ConfigFileNotFoundException
      * @throws ConfigFileNotInterpretableException
      */
-    public function __construct(private string $configFile)
+    public function __construct(private readonly string $configFile)
     {
         if (!file_exists($this->configFile)) {
             throw new ConfigFileNotFoundException(sprintf('Configurationfile %s not found', $this->configFile));
@@ -51,9 +51,7 @@ abstract class AbstractConfig
         $configType = ConfigType::getByString($fileEnding);
         $interpreter = $configType->getInterpreter();
 
-        $data = $interpreter->fromFile($configFile);
-
-        return $data;
+        return $interpreter->fromFile($configFile);
     }
 
     /**

@@ -31,6 +31,7 @@ final class Route
      * @param Request $request
      * @param array $vars
      * @return AbstractResponse
+     * @throws \ReflectionException
      */
     public function callHandler(Request $request, array $vars): AbstractResponse
     {
