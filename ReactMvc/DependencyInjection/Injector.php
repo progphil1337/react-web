@@ -15,75 +15,8 @@ use ReactMvc\Logger\Logger;
  */
 final class Injector
 {
-    /** @var array<string, mixed> */
-    private array $lookup = [];
-
-    /** @var array<string, string> */
-    private array $aliases = [];
-
-    /** @var array<string> */
-    private array $dismiss = [];
-
-    /**
-     * @param mixed $obj
-     * @return $this
-     */
-    public function register(mixed $obj): self
+    public function __construct(private readonly ClassLookup $lookup)
     {
-        $className = get_class($obj);
-
-        if (!array_key_exists($className, $this->dismiss)) {
-            Logger::debug($this, 'Register ' . $className);
-            $this->lookup[$className] = $obj;
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param string $className
-     * @param string $className2
-     * @return $this
-     */
-    public function alias(string $className, string $className2): self
-    {
-        $this->aliases[$className] = $className2;
-
-        return $this;
-    }
-
-    /**
-     * @param string $className
-     * @return bool
-     */
-    public function isRegistered(string $className): bool
-    {
-        $className = $this->getClassName($className);
-
-        return array_key_exists($className, $this->lookup);
-    }
-
-    /**
-     * @param string $className
-     * @return mixed
-     */
-    public function get(string $className): mixed
-    {
-        $className = $this->getClassName($className);
-
-        Logger::debug($this, 'Get ' . $className);
-        return $this->lookup[$className] ?? null;
-    }
-
-    /**
-     * @param string $className
-     * @return $this
-     */
-    public function dismiss(string $className): self
-    {
-        $this->dismiss[$className] = true;
-
-        return $this;
     }
 
     /**
@@ -93,9 +26,10 @@ final class Injector
      */
     public function create(string $className, array $methods = []): mixed
     {
-        $className = $this->getClassName($className);
+        $className = $this->lookup->getResolvedClassName($className);
 
-        if (!$this->isRegistered($className)) {
+        if (!$this->lookup->isRegistered($className)) {
+
             try {
                 $reflectionClass = new \ReflectionClass($className);
             } catch (\ReflectionException $e) {
@@ -112,7 +46,8 @@ final class Injector
                 } catch (\ReflectionException $e) {
                     Logger::error($this, sprintf('Error creating reflection without args: %s', $e->getMessage()));
                 }
-                $this->register($instance);
+
+                $this->lookup->register($instance);
             } else {
 
 
@@ -123,13 +58,11 @@ final class Injector
                 $dependencies = [];
 
                 foreach ($constructor->getParameters() as $parameter) {
-                    $name = $this->getClassName($parameter->getType()->getName());
+                    $name = $this->lookup->getResolvedClassName($parameter->getType()->getName());
 
-                    if (!array_key_exists($name, $this->lookup)) {
-                        $this->register($this->create($name));
-                    }
+                    $this->lookup->register($this->create($name));
 
-                    $dependencies[] = $this->lookup[$name];
+                    $dependencies[] = $this->lookup->get($name);
                 }
 
                 try {
@@ -139,29 +72,16 @@ final class Injector
                         call_user_func_array([$instance, $method], $args);
                     }
 
-                    $this->register($instance);
+                    $this->lookup->register($instance);
                 } catch (\ReflectionException $e) {
                     Logger::error($this, sprintf('Error creating reflection with args: %s', $e->getMessage()));
                 }
             }
 
         } else {
-            $instance = $this->get($className);
+            $instance = $this->lookup->get($className);
         }
 
         return $instance;
-    }
-
-    /**
-     * @param string $className
-     * @return string
-     */
-    private function getClassName(string $className): string
-    {
-        if (array_key_exists($className, $this->aliases)) {
-            $className = $this->aliases[$className];
-        }
-
-        return $className;
     }
 }

@@ -18,7 +18,8 @@ try {
     $config = new DefaultConfig($config);
     \ReactMvc\Logger\Logger::setConfig($config);
 
-    $injector = new Injector();
+    $lookup = new \ReactMvc\DependencyInjection\ClassLookup();
+    $injector = new Injector($lookup);
     require_once 'di_registry.php';
 
     $main = Main::create($config, $injector);
