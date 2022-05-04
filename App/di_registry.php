@@ -7,14 +7,17 @@
 
 
 $lookup
-    ->alias(\ReactMvc\Config\Config::class, get_class($config))
+    // class aliases
+    ->alias(get_class($config), \ReactMvc\Config\Config::class)
+
+    // register singletons
+    ->singleton(\ReactMvc\DependencyInjection\Singleton::class)
+    ->singleton(Twig\Environment::class)
+
+
+    // Register classes that cannot be created
     ->register($config)
     ->register(new Twig\Environment(
         new Twig\Loader\FilesystemLoader(APP_PATH . 'View')
     ))
-    ->dismiss(\ReactMvc\Middleware\Middleware::class)
 ;
-
-/** @var \ReactMvc\Session\Manager $sessionManager */
-$sessionManager = $injector->create(\ReactMvc\Session\Manager::class);
-$sessionManager->open();

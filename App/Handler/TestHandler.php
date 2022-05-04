@@ -24,7 +24,7 @@ class TestHandler extends Handler implements RouteAwareHandler
     public function handle(Request $request, array $vars): Response
     {
         return $this->render('test', [
-            'session_id' => 'Hallo'
+            'session_id' => $request->getSession()->hash
         ]);
     }
 }

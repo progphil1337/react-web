@@ -22,7 +22,9 @@ class LoginHandler extends Handler implements RouteAwareHandler
 {
     public function __construct(private readonly Manager $sessionManager)
     {
+        $this->t->a = 'LoginHandler';
     }
+
 
     public function handle(Request $request, array $vars): Response
     {

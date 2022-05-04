@@ -6,6 +6,7 @@ use ReactMvc\Config\Exception\ConfigFileNotFoundException;
 use ReactMvc\Config\Exception\ConfigFileNotInterpretableException;
 use ReactMvc\Config\Exception\ConfigTypeNotSupportedException;
 use ReactMvc\Config\Exception\UnableToCreateConfigException;
+use ReactMvc\DependencyInjection\Singleton;
 
 /**
  * AbstractConfig
@@ -14,7 +15,7 @@ use ReactMvc\Config\Exception\UnableToCreateConfigException;
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
-abstract class Config
+abstract class Config implements Singleton
 {
     private array $data = [];
 

@@ -20,7 +20,7 @@ final class ClassLookup
     private array $lookup = [];
 
     /** @var array<string,bool> */
-    private array $dismiss = [];
+    private array $singletons = [];
 
     /** @var array<string,string> */
     private array $aliases = [];
@@ -35,7 +35,8 @@ final class ClassLookup
 
             Logger::info($this, sprintf('Registering class %s', get_class($o)));
 
-            $this->lookup[get_class($o)] = $o;
+            echo 'Register ' . $this->getResolvedClassName($o) . PHP_EOL;
+            $this->lookup[$this->getResolvedClassName($o)] = $o;
         }
 
         return $this;
@@ -50,22 +51,22 @@ final class ClassLookup
         $className = $this->getClassName($o);
 
         if (
-            array_key_exists($className, $this->dismiss) ||
-            array_key_exists($this->getResolvedClassName($className), $this->dismiss)
+            array_key_exists($className, $this->singletons) ||
+            array_key_exists($this->getResolvedClassName($className), $this->singletons)
 
         ) {
-            return true;
+            return false;
         }
 
-        foreach (array_keys($this->dismiss) as $class) {
+        foreach (array_keys($this->singletons) as $class) {
             $resolvedName = $this->getResolvedClassName($class);
 
             if (is_subclass_of($className, $resolvedName)) {
-                return true;
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
     /**
@@ -74,7 +75,7 @@ final class ClassLookup
      */
     public function isRegistered(object|string $o): bool
     {
-        return array_key_exists($this->getClassName($o), $this->lookup);
+        return array_key_exists($this->getResolvedClassName($o), $this->lookup);
     }
 
     /**
@@ -90,9 +91,9 @@ final class ClassLookup
      * @param object|string $o
      * @return $this
      */
-    public function dismiss(object|string $o): self
+    public function singleton(object|string $o): self
     {
-        $this->dismiss[$this->getClassName($o)] = true;
+        $this->singletons[$this->getClassName($o)] = true;
 
         return $this;
     }

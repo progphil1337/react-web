@@ -7,6 +7,7 @@ namespace ReactMvc\Session;
 use DateInterval;
 use DateTime;
 use ReactMvc\Config\Config;
+use ReactMvc\DependencyInjection\Singleton;
 use ReactMvc\Logger\Logger;
 use RuntimeException;
 use SQLite3;
@@ -18,7 +19,7 @@ use SQLite3;
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
-final class Manager
+final class Manager implements Singleton
 {
     private const DATABASE_NAME = 'session.sqlite';
 
@@ -40,6 +41,8 @@ final class Manager
         }
 
         $this->collector = new Collector();
+
+        $this->open();
     }
 
     /**
@@ -119,7 +122,7 @@ final class Manager
     public function createSession(): Session
     {
         if (!$this->open) {
-            throw new RuntimeException(' Session is not connected');
+            throw new RuntimeException('Session is not connected');
         }
 
         $created = new DateTime();

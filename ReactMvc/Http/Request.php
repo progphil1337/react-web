@@ -2,6 +2,7 @@
 
 namespace ReactMvc\Http;
 
+use ReactMvc\DependencyInjection\Singleton;
 use ReactMvc\Session\Session;
 
 /**

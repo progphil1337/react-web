@@ -22,14 +22,11 @@ final class Injector
     /**
      * @param string $className
      * @param array $methods
-     * @return object
+     * @return ?object
      */
-    public function create(string $className, array $methods = []): mixed
+    public function create(string $className, array $methods = []): ?object
     {
-        $className = $this->lookup->getResolvedClassName($className);
-
         if (!$this->lookup->isRegistered($className)) {
-
             try {
                 $reflectionClass = new \ReflectionClass($className);
             } catch (\ReflectionException $e) {
@@ -49,8 +46,6 @@ final class Injector
 
                 $this->lookup->register($instance);
             } else {
-
-
                 if ($constructor->isPrivate()) {
                     Logger::error($this, 'Cannot create private constructors');
                 }
@@ -60,9 +55,11 @@ final class Injector
                 foreach ($constructor->getParameters() as $parameter) {
                     $name = $this->lookup->getResolvedClassName($parameter->getType()->getName());
 
-                    $this->lookup->register($this->create($name));
+                    $dependency = $this->create($name);
 
-                    $dependencies[] = $this->lookup->get($name);
+                    $this->lookup->register($dependency);
+
+                    $dependencies[] = $dependency;
                 }
 
                 try {

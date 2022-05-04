@@ -2,6 +2,7 @@
 
 namespace ReactMvc\Handler;
 
+use ReactMvc\DependencyInjection\Singleton;
 use ReactMvc\Http\Response;
 use ReactMvc\Http\ExceptionResponse;
 use ReactMvc\Http\HtmlResponse;
@@ -17,7 +18,7 @@ use Twig\Error\SyntaxError;
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
-abstract class Handler
+abstract class Handler implements Singleton
 {
     private readonly TwigEnvironment $twig;
 
