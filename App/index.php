@@ -6,7 +6,7 @@ use ReactMvc\Config\Exception\ConfigFileNotInterpretableException;
 use ReactMvc\DependencyInjection\Injector;
 use ReactMvc\Enum\BasicActionEnum;
 use ReactMvc\Main;
-use ReactMvc\Mvc\Routing\Exception\RoutesFileNotFoundException;
+use ReactMvc\Routing\Exception\RoutesFileNotFoundException;
 
 require_once 'autoload.php';
 

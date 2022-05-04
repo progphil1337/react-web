@@ -8,8 +8,8 @@ use ReactMvc\Enum\BasicActionEnum;
 use ReactMvc\Logger\Logger;
 use ReactMvc\Middleware\Middleware as AbstractMiddleware;
 use ReactMvc\Config\AbstractConfig;
-use ReactMvc\Mvc\Http\AbstractResponse;
-use ReactMvc\Mvc\Http\RedirectResponse;
+use ReactMvc\Http\AbstractResponse;
+use ReactMvc\Http\RedirectResponse;
 
 /**
  * Middleware
@@ -32,9 +32,9 @@ class Middleware extends AbstractMiddleware
     }
 
     /**
-     * @return \ReactMvc\Enum\BasicActionEnum|\ReactMvc\Mvc\Http\AbstractResponse
+     * @return \ReactMvc\Enum\BasicActionEnum|\ReactMvc\Http\AbstractResponse
      */
-    public function run(): BasicActionEnum|AbstractResponse
+    public function evaluate(): BasicActionEnum|AbstractResponse
     {
         $cookies = $this->getRequest()->cookies;
 

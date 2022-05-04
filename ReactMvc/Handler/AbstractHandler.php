@@ -1,23 +1,23 @@
 <?php
 
-namespace ReactMvc\Mvc\Controller;
+namespace ReactMvc\Handler;
 
-use ReactMvc\Mvc\Http\AbstractResponse;
-use ReactMvc\Mvc\Http\ExceptionResponse;
-use ReactMvc\Mvc\Http\HtmlResponse;
+use ReactMvc\Http\AbstractResponse;
+use ReactMvc\Http\ExceptionResponse;
+use ReactMvc\Http\HtmlResponse;
 use Twig\Environment as TwigEnvironment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
 /**
- * AbstractController
+ * AbstractHandler
  *
- * @package ReactMvc\Mvc\Controller
+ * @package ReactMvc\Handler
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
-abstract class AbstractController
+abstract class AbstractHandler
 {
     private readonly TwigEnvironment $twig;
 

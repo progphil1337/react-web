@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace ReactMvc\Mvc\Http;
+namespace ReactMvc\Http;
 
 /**
  * RedirectResponse
  *
- * @package ReactMvc\Mvc\Http
+ * @package ReactMvc\Http
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
@@ -19,7 +19,7 @@ class RedirectResponse extends AbstractResponse
         $header = [
             'Location' => $url
         ];
-        parent::__construct('', 301, $header);
+        parent::__construct('', 307, $header);
     }
 
     protected function getContentType(): ?string

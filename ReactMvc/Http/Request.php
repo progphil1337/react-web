@@ -1,13 +1,13 @@
 <?php
 
-namespace ReactMvc\Mvc\Http;
+namespace ReactMvc\Http;
 
 use ReactMvc\Session\Session;
 
 /**
  * Request
  *
- * @package ReactMvc\Mvc\Http
+ * @package ReactMvc\Http
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */

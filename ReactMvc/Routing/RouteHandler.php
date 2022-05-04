@@ -1,35 +1,35 @@
 <?php
 
-namespace ReactMvc\Mvc\Routing;
+namespace ReactMvc\Routing;
 
 use ReactMvc\DependencyInjection\Injector;
 use ReactMvc\Logger\Logger;
 use ReactMvc\Enum\BasicActionEnum;
-use ReactMvc\Mvc\Controller\AbstractController;
-use ReactMvc\Mvc\Http\HtmlResponse;
-use ReactMvc\Mvc\Http\MethodEnum;
-use ReactMvc\Mvc\Http\AbstractResponse;
-use ReactMvc\Mvc\Http\Request;
-use ReactMvc\Mvc\Http\TextResponse;
-use ReactMvc\Mvc\Routing\Exception\RoutesFileNotFoundException;
+use ReactMvc\Handler\AbstractHandler;
+use ReactMvc\Http\HtmlResponse;
+use ReactMvc\Http\MethodEnum;
+use ReactMvc\Http\AbstractResponse;
+use ReactMvc\Http\Request;
+use ReactMvc\Http\TextResponse;
+use ReactMvc\Routing\Exception\RoutesFileNotFoundException;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
 
 /**
  * RouteHandler
  *
- * @package ReactMvc\Mvc\Routing
+ * @package ReactMvc\Routing
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
 final class RouteHandler
 {
-    /** @var array<\ReactMvc\Mvc\Routing\Route> */
+    /** @var array<\ReactMvc\Routing\Route> */
     private array $routes = [];
 
     private static Injector $injector;
 
-    /** @var array<string, \ReactMvc\Mvc\Routing\RouteAwareHandler> */
+    /** @var array<string, \ReactMvc\Routing\RouteAwareHandler> */
     private static array $loadedHandlers = [];
 
     /**
@@ -104,10 +104,10 @@ final class RouteHandler
 
             $classPath = "App\\{$handlerName}";
 
-            /** @var \ReactMvc\Mvc\Routing\RouteAwareHandler $handler */
+            /** @var \ReactMvc\Routing\RouteAwareHandler $handler */
             $handler = self::$injector->create($classPath);
 
-            if ($handler instanceof AbstractController) {
+            if ($handler instanceof AbstractHandler) {
 
                 $handler->createInstance(self::$injector->create(Environment::class));
             }
@@ -121,7 +121,7 @@ final class RouteHandler
                 'createInstance' => [$request]
             ]);
 
-            $result = $middleware->run();
+            $result = $middleware->evaluate();
 
             if ($result instanceof BasicActionEnum && $result !== BasicActionEnum::SUCCESS) {
                 Logger::error(RouteHandler::class, 'Middleware not successful');
@@ -134,7 +134,7 @@ final class RouteHandler
             }
         }
 
-        return $handler->call($route->route, $request, $vars);
+        return $handler->handle($request, $vars);
     }
 
     /**

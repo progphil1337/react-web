@@ -106,33 +106,45 @@ final class Injector
 
             $constructor = $reflectionClass->getConstructor();
 
-            if ($constructor->isPrivate()) {
-                Logger::error($this, 'Cannot create private constructors');
-            }
-
-            $dependencies = [];
-
-            foreach ($constructor->getParameters() as $parameter) {
-                $name = $this->getClassName($parameter->getType()->getName());
-
-                if (!array_key_exists($name, $this->lookup)) {
-                    $this->register($this->create($name));
+            if ($constructor === null) {
+                try {
+                    $instance = $reflectionClass->newInstance();
+                } catch (\ReflectionException $e) {
+                    Logger::error($this, sprintf('Error creating reflection without args: %s', $e->getMessage()));
                 }
-
-                $dependencies[] = $this->lookup[$name];
-            }
-
-            try {
-                $instance = $reflectionClass->newInstanceArgs($dependencies);
-
-                foreach ($methods as $method => $args) {
-                    call_user_func_array([$instance, $method], $args);
-                }
-
                 $this->register($instance);
-            } catch (\ReflectionException $e) {
-                Logger::error($this, sprintf('Error creating reflection: %s', $e->getMessage()));
+            } else {
+
+
+                if ($constructor->isPrivate()) {
+                    Logger::error($this, 'Cannot create private constructors');
+                }
+
+                $dependencies = [];
+
+                foreach ($constructor->getParameters() as $parameter) {
+                    $name = $this->getClassName($parameter->getType()->getName());
+
+                    if (!array_key_exists($name, $this->lookup)) {
+                        $this->register($this->create($name));
+                    }
+
+                    $dependencies[] = $this->lookup[$name];
+                }
+
+                try {
+                    $instance = $reflectionClass->newInstanceArgs($dependencies);
+
+                    foreach ($methods as $method => $args) {
+                        call_user_func_array([$instance, $method], $args);
+                    }
+
+                    $this->register($instance);
+                } catch (\ReflectionException $e) {
+                    Logger::error($this, sprintf('Error creating reflection with args: %s', $e->getMessage()));
+                }
             }
+
         } else {
             $instance = $this->get($className);
         }

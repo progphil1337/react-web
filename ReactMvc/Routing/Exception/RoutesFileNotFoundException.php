@@ -1,11 +1,11 @@
 <?php
 
-namespace ReactMvc\Mvc\Routing\Exception;
+namespace ReactMvc\Routing\Exception;
 
 /**
  * RoutesFileNotFoundException
  *
- * @package ReactMvc\Mvc\Routing\Exception
+ * @package ReactMvc\Routing\Exception
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */

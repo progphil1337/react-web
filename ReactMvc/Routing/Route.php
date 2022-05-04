@@ -1,14 +1,14 @@
 <?php
 
-namespace ReactMvc\Mvc\Routing;
+namespace ReactMvc\Routing;
 
-use ReactMvc\Mvc\Http\AbstractResponse;
-use ReactMvc\Mvc\Http\Request;
+use ReactMvc\Http\AbstractResponse;
+use ReactMvc\Http\Request;
 
 /**
  * Route
  *
- * @package ReactMvc\Mvc\Routing
+ * @package ReactMvc\Routing
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace ReactMvc\Middleware;
 
 use ReactMvc\Enum\BasicActionEnum;
-use ReactMvc\Mvc\Http\AbstractResponse;
-use ReactMvc\Mvc\Http\Request;
+use ReactMvc\Http\AbstractResponse;
+use ReactMvc\Http\Request;
 
 /**
  * Middleware
@@ -31,5 +31,5 @@ abstract class Middleware
         return $this->request;
     }
 
-    abstract public function run(): BasicActionEnum|AbstractResponse;
+    abstract public function evaluate(): BasicActionEnum|AbstractResponse;
 }

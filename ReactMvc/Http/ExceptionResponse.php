@@ -1,6 +1,6 @@
 <?php
 
-namespace ReactMvc\Mvc\Http;
+namespace ReactMvc\Http;
 
 use Exception;
 use JetBrains\PhpStorm\Pure;
@@ -8,7 +8,7 @@ use JetBrains\PhpStorm\Pure;
 /**
  * ExceptionResponse
  *
- * @package ReactMvc\Mvc\Http
+ * @package ReactMvc\Http
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */

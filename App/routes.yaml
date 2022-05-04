@@ -1,9 +1,9 @@
-Controller\TestController:
+Handler\TestHandler:
   route: /test
   methods: [GET]
   middleware:
     - ReactMvc\Session\Middleware
 
-Controller\LoginController:
+Handler\LoginHandler:
   route: /login
   methods: [GET]

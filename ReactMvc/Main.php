@@ -10,11 +10,11 @@ use React\Socket\SocketServer;
 use ReactMvc\Config\AbstractConfig;
 use ReactMvc\DependencyInjection\Injector;
 use ReactMvc\Logger\Logger;
-use ReactMvc\Mvc\Http\ExceptionResponse;
-use ReactMvc\Mvc\Http\Header;
-use ReactMvc\Mvc\Http\MethodEnum;
-use ReactMvc\Mvc\Http\Request;
-use ReactMvc\Mvc\Routing\RouteHandler;
+use ReactMvc\Http\ExceptionResponse;
+use ReactMvc\Http\Header;
+use ReactMvc\Http\MethodEnum;
+use ReactMvc\Http\Request;
+use ReactMvc\Routing\RouteHandler;
 use FastRoute;
 
 /**
@@ -54,7 +54,7 @@ final class Main
     /**
      * @param \ReactMvc\DependencyInjection\Injector $injector
      * @return void
-     * @throws \ReactMvc\Mvc\Routing\Exception\RoutesFileNotFoundException
+     * @throws \ReactMvc\Routing\Exception\RoutesFileNotFoundException
      */
     public function run(Injector $injector): void
     {
@@ -67,7 +67,7 @@ final class Main
     /**
      * @param string $routesFile
      * @return void
-     * @throws Mvc\Routing\Exception\RoutesFileNotFoundException
+     * @throws \ReactMvc\Routing\Exception\RoutesFileNotFoundException
      */
     private function loadRoutes(string $routesFile): void
     {
@@ -120,7 +120,7 @@ final class Main
 
                 $routeInfo = $this->dispatcher->dispatch($r->method->value, $uri);
 
-                /** @var \ReactMvc\Mvc\Routing\Route $route */
+                /** @var \ReactMvc\Routing\Route $route */
                 $route = $routeInfo[1] ?? null;
 
                 try {

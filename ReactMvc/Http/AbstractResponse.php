@@ -1,13 +1,13 @@
 <?php
 
-namespace ReactMvc\Mvc\Http;
+namespace ReactMvc\Http;
 
 use React\Http\Message\Response as HttpResponse;
 
 /**
  * Response
  *
- * @package ReactMvc\Mvc\Http
+ * @package ReactMvc\Http
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
