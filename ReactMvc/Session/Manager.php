@@ -6,7 +6,7 @@ namespace ReactMvc\Session;
 
 use DateInterval;
 use DateTime;
-use ReactMvc\Config\AbstractConfig;
+use ReactMvc\Config\Config;
 use ReactMvc\Logger\Logger;
 use RuntimeException;
 use SQLite3;
@@ -29,9 +29,9 @@ final class Manager
     private readonly Collector $collector;
 
     /**
-     * @param \ReactMvc\Config\AbstractConfig $config
+     * @param \ReactMvc\Config\Config $config
      */
-    public function __construct(private readonly AbstractConfig $config)
+    public function __construct(private readonly Config $config)
     {
         $this->directoryPath = PROJECT_PATH . DIRECTORY_SEPARATOR . $this->config->get('Session::file');
         $this->filePath = sprintf('%s%s', $this->directoryPath, self::DATABASE_NAME);

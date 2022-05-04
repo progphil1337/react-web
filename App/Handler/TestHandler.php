@@ -2,8 +2,8 @@
 
 namespace App\Handler;
 
-use ReactMvc\Handler\AbstractHandler;
-use ReactMvc\Http\AbstractResponse;
+use ReactMvc\Handler\Handler;
+use ReactMvc\Http\Response;
 use ReactMvc\Http\Request;
 use ReactMvc\Routing\RouteAwareHandler;
 
@@ -14,14 +14,14 @@ use ReactMvc\Routing\RouteAwareHandler;
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
-class TestHandler extends AbstractHandler implements RouteAwareHandler
+class TestHandler extends Handler implements RouteAwareHandler
 {
     /**
      * @param \ReactMvc\Http\Request $request
      * @param array $vars
      * @return \ReactMvc\Http\HtmlResponse
      */
-    public function handle(Request $request, array $vars): AbstractResponse
+    public function handle(Request $request, array $vars): Response
     {
         return $this->render('test', [
             'session_id' => 'Hallo'

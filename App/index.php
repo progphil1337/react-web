@@ -1,6 +1,6 @@
 <?php
 
-use ReactMvc\Config\BasicConfig;
+use ReactMvc\Config\DefaultConfig;
 use ReactMvc\Config\Exception\ConfigFileNotFoundException;
 use ReactMvc\Config\Exception\ConfigFileNotInterpretableException;
 use ReactMvc\DependencyInjection\Injector;
@@ -15,14 +15,15 @@ const APP_PATH = PROJECT_PATH . 'App' . DIRECTORY_SEPARATOR;
 $config = APP_PATH . 'config.yaml';
 
 try {
-    $config = new BasicConfig($config);
-
-    $main = Main::create($config);
+    $config = new DefaultConfig($config);
+    \ReactMvc\Logger\Logger::setConfig($config);
 
     $injector = new Injector();
     require_once 'di_registry.php';
 
-    $main->run($injector);
+    $main = Main::create($config, $injector);
+
+    $main->run();
 } catch (RoutesFileNotFoundException|ConfigFileNotFoundException|ConfigFileNotInterpretableException $e) {
     echo $e->getMessage();
 

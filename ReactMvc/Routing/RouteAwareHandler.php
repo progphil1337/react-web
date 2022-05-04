@@ -3,7 +3,7 @@
 namespace ReactMvc\Routing;
 
 use ReactMvc\Http\MethodEnum;
-use ReactMvc\Http\AbstractResponse;
+use ReactMvc\Http\Response;
 use ReactMvc\Http\Request;
 
 /**
@@ -18,7 +18,7 @@ interface RouteAwareHandler
     /**
      * @param \ReactMvc\Http\Request $request
      * @param array $vars
-     * @return AbstractResponse
+     * @return Response
      */
-    public function handle(Request $request, array $vars): AbstractResponse;
+    public function handle(Request $request, array $vars): Response;
 }

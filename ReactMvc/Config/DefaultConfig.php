@@ -9,7 +9,7 @@ namespace ReactMvc\Config;
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
-final class BasicConfig extends AbstractConfig
+final class DefaultConfig extends Config
 {
 
 }

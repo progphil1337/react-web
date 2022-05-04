@@ -1,2 +1,10 @@
-[INFO][ReactMvc\Main][15:29:06.150800] Starting server
-[INFO][ReactMvc\Main][15:29:06.158600] Server running on 127.0.0.1:80
+[DEBUG][ReactMvc\DependencyInjection\Injector][08:21:20.117500] Register ReactMvc\Config\DefaultConfig
+[DEBUG][ReactMvc\DependencyInjection\Injector][08:21:20.122600] Register Twig\Environment
+[DEBUG][ReactMvc\DependencyInjection\Injector][08:21:20.125800] Register ReactMvc\Session\Manager
+[DEBUG][ReactMvc\DependencyInjection\Injector][08:21:20.127000] Register ReactMvc\Session\Manager
+[DEBUG][ReactMvc\Main][08:21:20.129600] Loading Routes
+[DEBUG][ReactMvc\Routing\RouteHandler][08:21:20.130500] Loading routes from C:\react-mvc\App\..\App\routes.yaml
+[DEBUG][ReactMvc\Routing\RouteHandler][08:21:20.132200] Registering route /test (GET) with handler Handler\TestHandler
+[DEBUG][ReactMvc\Routing\RouteHandler][08:21:20.132700] Registering route /login (GET) with handler Handler\LoginHandler
+[INFO][ReactMvc\Main][08:21:20.135500] Starting server
+[INFO][ReactMvc\Main][08:21:20.142200] Server running on 127.0.0.1:80

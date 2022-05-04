@@ -14,7 +14,7 @@ use ReactMvc\Config\Exception\UnableToCreateConfigException;
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
-abstract class AbstractConfig
+abstract class Config
 {
     private array $data = [];
 

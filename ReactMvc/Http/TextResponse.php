@@ -9,7 +9,7 @@ namespace ReactMvc\Http;
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
-class TextResponse extends AbstractResponse
+class TextResponse extends Response
 {
 
     /**

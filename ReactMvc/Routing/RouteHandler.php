@@ -5,10 +5,9 @@ namespace ReactMvc\Routing;
 use ReactMvc\DependencyInjection\Injector;
 use ReactMvc\Logger\Logger;
 use ReactMvc\Enum\BasicActionEnum;
-use ReactMvc\Handler\AbstractHandler;
-use ReactMvc\Http\HtmlResponse;
+use ReactMvc\Handler\Handler;
 use ReactMvc\Http\MethodEnum;
-use ReactMvc\Http\AbstractResponse;
+use ReactMvc\Http\Response;
 use ReactMvc\Http\Request;
 use ReactMvc\Http\TextResponse;
 use ReactMvc\Routing\Exception\RoutesFileNotFoundException;
@@ -91,9 +90,9 @@ final class RouteHandler
      * @param Route $route
      * @param Request $request
      * @param array $vars
-     * @return AbstractResponse
+     * @return Response
      */
-    public static function callHandler(string $handlerName, Route $route, Request $request, array $vars): AbstractResponse
+    public static function callHandler(string $handlerName, Route $route, Request $request, array $vars): Response
     {
         Logger::debug(RouteHandler::class, sprintf('Calling handler %s', $handlerName));
 
@@ -107,7 +106,7 @@ final class RouteHandler
             /** @var \ReactMvc\Routing\RouteAwareHandler $handler */
             $handler = self::$injector->create($classPath);
 
-            if ($handler instanceof AbstractHandler) {
+            if ($handler instanceof Handler) {
 
                 $handler->createInstance(self::$injector->create(Environment::class));
             }
@@ -129,7 +128,7 @@ final class RouteHandler
                 return new TextResponse('Not authorized');
             }
 
-            if ($result instanceof AbstractResponse) {
+            if ($result instanceof Response) {
                 return $result;
             }
         }

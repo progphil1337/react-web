@@ -12,7 +12,7 @@ use JetBrains\PhpStorm\Pure;
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
-class ExceptionResponse extends AbstractResponse
+class ExceptionResponse extends Response
 {
 
     /**

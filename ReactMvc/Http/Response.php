@@ -11,7 +11,7 @@ use React\Http\Message\Response as HttpResponse;
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
-abstract class AbstractResponse
+abstract class Response
 {
 
     /**

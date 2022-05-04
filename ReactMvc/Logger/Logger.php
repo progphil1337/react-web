@@ -3,7 +3,7 @@
 namespace ReactMvc\Logger;
 
 use DateTime;
-use ReactMvc\Config\AbstractConfig;
+use ReactMvc\Config\Config;
 
 /**
  * Logger
@@ -17,10 +17,10 @@ final class Logger
     private static array $config;
 
     /**
-     * @param AbstractConfig $config
+     * @param Config $config
      * @return void
      */
-    public static function setConfig(AbstractConfig $config): void
+    public static function setConfig(Config $config): void
     {
         self::$config = $config->get('Logging');
 

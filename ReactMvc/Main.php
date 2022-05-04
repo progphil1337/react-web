@@ -7,7 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use React\Http\HttpServer;
 use React\Http\Message\Response;
 use React\Socket\SocketServer;
-use ReactMvc\Config\AbstractConfig;
+use ReactMvc\Config\Config;
 use ReactMvc\DependencyInjection\Injector;
 use ReactMvc\Logger\Logger;
 use ReactMvc\Http\ExceptionResponse;
@@ -27,38 +27,36 @@ final class Main
 {
     private static ?self $instance = null;
     private readonly Dispatcher $dispatcher;
-    private readonly Injector $injector;
 
     /**
-     * @param AbstractConfig $config
+     * @param Config $config
+     * @param \ReactMvc\DependencyInjection\Injector $injector
      * @return static
      */
-    public static function create(AbstractConfig $config): self
+    public static function create(Config $config, Injector $injector): self
     {
 
         if (!self::$instance instanceof self) {
-            self::$instance = new self($config);
+            self::$instance = new self($config, $injector);
         }
 
         return self::$instance;
     }
 
     /**
-     * @param AbstractConfig $config
+     * @param Config $config
+     * @param \ReactMvc\DependencyInjection\Injector $injector
      */
-    private function __construct(private readonly AbstractConfig $config)
+    private function __construct(private readonly Config $config, private readonly Injector $injector)
     {
-        Logger::setConfig($this->config);
     }
 
     /**
-     * @param \ReactMvc\DependencyInjection\Injector $injector
      * @return void
      * @throws \ReactMvc\Routing\Exception\RoutesFileNotFoundException
      */
-    public function run(Injector $injector): void
+    public function run(): void
     {
-        $this->injector = $injector;
 
         $this->loadRoutes(APP_PATH . $this->config->get('Routes'));
         $this->start($this->config->get('HttpServer::ip'), (int)$this->config->get('HttpServer::port'));
@@ -129,7 +127,7 @@ final class Main
                         Dispatcher::FOUND => $route->callHandler($r, $routeInfo[2])->toHttpResponse(),
                         default => new Response(404, ['Content-Type' => 'text/plain'], sprintf('Route %s not found', $uri)),
                     };
-                } catch(\Exception $e) {
+                } catch (\Exception $e) {
                     return (new ExceptionResponse($e))->toHttpResponse();
                 }
             }

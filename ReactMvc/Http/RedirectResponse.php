@@ -11,7 +11,7 @@ namespace ReactMvc\Http;
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
-class RedirectResponse extends AbstractResponse
+class RedirectResponse extends Response
 {
 
     public function __construct(string $url)

@@ -2,7 +2,7 @@
 
 namespace ReactMvc\Routing;
 
-use ReactMvc\Http\AbstractResponse;
+use ReactMvc\Http\Response;
 use ReactMvc\Http\Request;
 
 /**
@@ -32,9 +32,9 @@ final class Route
     /**
      * @param Request $request
      * @param array $vars
-     * @return AbstractResponse
+     * @return Response
      */
-    public function callHandler(Request $request, array $vars): AbstractResponse
+    public function callHandler(Request $request, array $vars): Response
     {
         return RouteHandler::callHandler($this->handler, $this, $request, $vars);
     }

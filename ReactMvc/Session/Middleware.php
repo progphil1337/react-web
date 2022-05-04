@@ -7,8 +7,8 @@ namespace ReactMvc\Session;
 use ReactMvc\Enum\BasicActionEnum;
 use ReactMvc\Logger\Logger;
 use ReactMvc\Middleware\Middleware as AbstractMiddleware;
-use ReactMvc\Config\AbstractConfig;
-use ReactMvc\Http\AbstractResponse;
+use ReactMvc\Config\Config;
+use ReactMvc\Http\Response;
 use ReactMvc\Http\RedirectResponse;
 
 /**
@@ -24,17 +24,17 @@ class Middleware extends AbstractMiddleware
 
     /**
      * @param \ReactMvc\Session\Manager $sessionManager
-     * @param \ReactMvc\Config\AbstractConfig $config
+     * @param \ReactMvc\Config\Config $config
      */
-    public function __construct(private readonly Manager $sessionManager, private readonly AbstractConfig $config)
+    public function __construct(private readonly Manager $sessionManager, private readonly Config $config)
     {
         $this->key = $this->config->get('Session::key');
     }
 
     /**
-     * @return \ReactMvc\Enum\BasicActionEnum|\ReactMvc\Http\AbstractResponse
+     * @return \ReactMvc\Enum\BasicActionEnum|\ReactMvc\Http\Response
      */
-    public function evaluate(): BasicActionEnum|AbstractResponse
+    public function evaluate(): BasicActionEnum|Response
     {
         $cookies = $this->getRequest()->cookies;
 

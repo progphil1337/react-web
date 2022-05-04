@@ -2,7 +2,7 @@
 
 namespace ReactMvc\Handler;
 
-use ReactMvc\Http\AbstractResponse;
+use ReactMvc\Http\Response;
 use ReactMvc\Http\ExceptionResponse;
 use ReactMvc\Http\HtmlResponse;
 use Twig\Environment as TwigEnvironment;
@@ -17,13 +17,9 @@ use Twig\Error\SyntaxError;
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
-abstract class AbstractHandler
+abstract class Handler
 {
     private readonly TwigEnvironment $twig;
-
-    public function __construct() {
-        // needed for DI
-    }
 
     public function createInstance(TwigEnvironment $twig): void
     {
@@ -33,9 +29,9 @@ abstract class AbstractHandler
     /**
      * @param string $template
      * @param array $args
-     * @return AbstractResponse
+     * @return Response
      */
-    protected function render(string $template, array $args = []): AbstractResponse
+    protected function render(string $template, array $args = []): Response
     {
         try {
             return new HtmlResponse($this->twig->render("{$template}.twig", $args));
