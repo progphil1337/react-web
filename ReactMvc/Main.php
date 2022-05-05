@@ -10,11 +10,11 @@ use React\Socket\SocketServer;
 use ReactMvc\Config\Config;
 use ReactMvc\DependencyInjection\Injector;
 use ReactMvc\Logger\Logger;
-use ReactMvc\Http\ExceptionResponse;
-use ReactMvc\Http\Header;
-use ReactMvc\Http\MethodEnum;
-use ReactMvc\Http\Request;
-use ReactMvc\Routing\RouteHandler;
+use ReactMvc\HTTP\ExceptionResponse;
+use ReactMvc\HTTP\Header;
+use ReactMvc\HTTP\MethodEnum;
+use ReactMvc\HTTP\Request;
+use ReactMvc\Routing\RouteHandleResolver;
 use FastRoute;
 
 /**
@@ -70,7 +70,7 @@ final class Main
     private function loadRoutes(string $routesFile): void
     {
         Logger::debug($this, 'Loading Routes');
-        $routeHandler = new RouteHandler($this->injector);
+        $routeHandler = new RouteHandleResolver($this->injector);
         $routeHandler->loadFromFile($routesFile);
 
         $this->dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) use ($routeHandler) {

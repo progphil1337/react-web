@@ -3,8 +3,8 @@
 namespace App\Handler;
 
 use ReactMvc\Handler\Handler;
-use ReactMvc\Http\Response;
-use ReactMvc\Http\Request;
+use ReactMvc\HTTP\Response;
+use ReactMvc\HTTP\Request;
 use ReactMvc\Routing\RouteAwareHandler;
 
 /**
@@ -17,9 +17,9 @@ use ReactMvc\Routing\RouteAwareHandler;
 class TestHandler extends Handler implements RouteAwareHandler
 {
     /**
-     * @param \ReactMvc\Http\Request $request
+     * @param \ReactMvc\HTTP\Request $request
      * @param array $vars
-     * @return \ReactMvc\Http\HtmlResponse
+     * @return \ReactMvc\HTTP\HtmlResponse
      */
     public function handle(Request $request, array $vars): Response
     {

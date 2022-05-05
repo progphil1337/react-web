@@ -3,9 +3,9 @@
 namespace ReactMvc\Handler;
 
 use ReactMvc\DependencyInjection\Singleton;
-use ReactMvc\Http\Response;
-use ReactMvc\Http\ExceptionResponse;
-use ReactMvc\Http\HtmlResponse;
+use ReactMvc\HTTP\Response;
+use ReactMvc\HTTP\ExceptionResponse;
+use ReactMvc\HTTP\HtmlResponse;
 use Twig\Environment as TwigEnvironment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;

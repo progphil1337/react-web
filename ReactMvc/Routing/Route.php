@@ -2,8 +2,8 @@
 
 namespace ReactMvc\Routing;
 
-use ReactMvc\Http\Response;
-use ReactMvc\Http\Request;
+use ReactMvc\HTTP\Response;
+use ReactMvc\HTTP\Request;
 
 /**
  * Route
@@ -36,6 +36,6 @@ final class Route
      */
     public function callHandler(Request $request, array $vars): Response
     {
-        return RouteHandler::callHandler($this->handler, $this, $request, $vars);
+        return RouteHandleResolver::callHandler($this->handler, $this, $request, $vars);
     }
 }

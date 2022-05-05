@@ -8,8 +8,8 @@ use ReactMvc\Enum\BasicActionEnum;
 use ReactMvc\Logger\Logger;
 use ReactMvc\Middleware\Middleware as AbstractMiddleware;
 use ReactMvc\Config\Config;
-use ReactMvc\Http\Response;
-use ReactMvc\Http\RedirectResponse;
+use ReactMvc\HTTP\Response;
+use ReactMvc\HTTP\RedirectResponse;
 
 /**
  * Middleware
@@ -32,7 +32,7 @@ class Middleware extends AbstractMiddleware
     }
 
     /**
-     * @return \ReactMvc\Enum\BasicActionEnum|\ReactMvc\Http\Response
+     * @return \ReactMvc\Enum\BasicActionEnum|\ReactMvc\HTTP\Response
      */
     public function evaluate(): BasicActionEnum|Response
     {

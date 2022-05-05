@@ -6,6 +6,8 @@ namespace ReactMvc\Session;
 
 use DateInterval;
 use DateTime;
+use Fiber;
+use React\ChildProcess\Process;
 use ReactMvc\Config\Config;
 use ReactMvc\DependencyInjection\Singleton;
 use ReactMvc\Logger\Logger;

@@ -6,22 +6,22 @@ use ReactMvc\DependencyInjection\Injector;
 use ReactMvc\Logger\Logger;
 use ReactMvc\Enum\BasicActionEnum;
 use ReactMvc\Handler\Handler;
-use ReactMvc\Http\MethodEnum;
-use ReactMvc\Http\Response;
-use ReactMvc\Http\Request;
-use ReactMvc\Http\TextResponse;
+use ReactMvc\HTTP\MethodEnum;
+use ReactMvc\HTTP\Response;
+use ReactMvc\HTTP\Request;
+use ReactMvc\HTTP\TextResponse;
 use ReactMvc\Routing\Exception\RoutesFileNotFoundException;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
 
 /**
- * RouteHandler
+ * RouteHandleResolver
  *
  * @package ReactMvc\Routing
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
-final class RouteHandler
+final class RouteHandleResolver
 {
     /** @var array<\ReactMvc\Routing\Route> */
     private array $routes = [];
@@ -44,7 +44,7 @@ final class RouteHandler
      */
     public function loadFromFile(string $file): BasicActionEnum
     {
-        Logger::debug(RouteHandler::class, sprintf('Loading routes from %s', $file));
+        Logger::debug(RouteHandleResolver::class, sprintf('Loading routes from %s', $file));
 
         if (!file_exists($file)) {
             throw new RoutesFileNotFoundException(sprintf('Routes file %s not found', $file));
@@ -59,7 +59,7 @@ final class RouteHandler
                 middlewares: $info['middleware'] ?? []
             );
 
-            Logger::debug(RouteHandler::class, sprintf('Registering route %s (%s) with handler %s', $route->route, implode(', ', $info['methods']), $route->handler));
+            Logger::debug(RouteHandleResolver::class, sprintf('Registering route %s (%s) with handler %s', $route->route, implode(', ', $info['methods']), $route->handler));
 
             $this->routes[] = $route;
         }
@@ -94,7 +94,7 @@ final class RouteHandler
      */
     public static function callHandler(string $handlerName, Route $route, Request $request, array $vars): Response
     {
-        Logger::debug(RouteHandler::class, sprintf('Calling handler %s', $handlerName));
+        Logger::debug(RouteHandleResolver::class, sprintf('Calling handler %s', $handlerName));
 
         $handler = self::getHandler($route);
 
@@ -123,7 +123,7 @@ final class RouteHandler
             $result = $middleware->evaluate();
 
             if ($result instanceof BasicActionEnum && $result !== BasicActionEnum::SUCCESS) {
-                Logger::error(RouteHandler::class, 'Middleware not successful');
+                Logger::error(RouteHandleResolver::class, 'Middleware not successful');
 
                 return new TextResponse('Not authorized');
             }
@@ -143,7 +143,7 @@ final class RouteHandler
      */
     private static function cacheHandler(Route $route, RouteAwareHandler $handler): void
     {
-        Logger::debug(RouteHandler::class, sprintf('Caching handler %s for route %s', get_class($handler), $route->route));
+        Logger::debug(RouteHandleResolver::class, sprintf('Caching handler %s for route %s', get_class($handler), $route->route));
         self::$loadedHandlers[$route->route] = $handler;
     }
 }

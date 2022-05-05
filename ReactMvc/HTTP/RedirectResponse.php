@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace ReactMvc\Http;
+namespace ReactMvc\HTTP;
 
 /**
  * RedirectResponse
  *
- * @package ReactMvc\Http
+ * @package ReactMvc\HTTP
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */

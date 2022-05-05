@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace ReactMvc\Middleware;
 
 use ReactMvc\Enum\BasicActionEnum;
-use ReactMvc\Http\Response;
-use ReactMvc\Http\Request;
+use ReactMvc\HTTP\Response;
+use ReactMvc\HTTP\Request;
 
 /**
  * Middleware

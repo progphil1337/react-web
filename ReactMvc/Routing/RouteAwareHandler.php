@@ -2,9 +2,9 @@
 
 namespace ReactMvc\Routing;
 
-use ReactMvc\Http\MethodEnum;
-use ReactMvc\Http\Response;
-use ReactMvc\Http\Request;
+use ReactMvc\HTTP\MethodEnum;
+use ReactMvc\HTTP\Response;
+use ReactMvc\HTTP\Request;
 
 /**
  * RouteAwareHandler
@@ -16,7 +16,7 @@ use ReactMvc\Http\Request;
 interface RouteAwareHandler
 {
     /**
-     * @param \ReactMvc\Http\Request $request
+     * @param \ReactMvc\HTTP\Request $request
      * @param array $vars
      * @return Response
      */

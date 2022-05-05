@@ -1,6 +1,6 @@
 <?php
 
-namespace ReactMvc\Http;
+namespace ReactMvc\HTTP;
 
 use ReactMvc\DependencyInjection\Singleton;
 use ReactMvc\Session\Session;
@@ -8,7 +8,7 @@ use ReactMvc\Session\Session;
 /**
  * Request
  *
- * @package ReactMvc\Http
+ * @package ReactMvc\HTTP
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */

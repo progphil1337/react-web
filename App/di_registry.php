@@ -5,7 +5,6 @@
  * @var \ReactMvc\DependencyInjection\Injector $injector
  */
 
-
 $lookup
     // class aliases
     ->alias(get_class($config), \ReactMvc\Config\Config::class)
@@ -13,7 +12,6 @@ $lookup
     // register singletons
     ->singleton(\ReactMvc\DependencyInjection\Singleton::class)
     ->singleton(Twig\Environment::class)
-
 
     // Register classes that cannot be created
     ->register($config)

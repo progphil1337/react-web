@@ -1,11 +1,11 @@
 <?php
 
-namespace ReactMvc\Http;
+namespace ReactMvc\HTTP;
 
 /**
  * MethodEnum
  *
- * @package ReactMvc\Http
+ * @package ReactMvc\HTTP
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
