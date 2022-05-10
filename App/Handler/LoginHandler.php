@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
-use ReactMvc\Handler\Handler;
-use ReactMvc\HTTP\Response;
-use ReactMvc\HTTP\HtmlResponse;
-use ReactMvc\HTTP\Request;
-use ReactMvc\Routing\RouteAwareHandler;
-use ReactMvc\Session\Manager;
+use ReactWeb\Handler\Handler;
+use ReactWeb\HTTP\Response;
+use ReactWeb\HTTP\HtmlResponse;
+use ReactWeb\HTTP\Request;
+use ReactWeb\Routing\RouteAwareHandler;
+use ReactWeb\Session\Manager;
 
 /**
  * LoginHandler

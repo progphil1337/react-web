@@ -2,7 +2,7 @@ Handler\TestHandler:
   route: /test
   methods: [GET]
   middleware:
-    - ReactMvc\Session\Middleware
+    - ReactWeb\Session\Middleware
 
 Handler\LoginHandler:
   route: /login

@@ -6,7 +6,7 @@ require_once PROJECT_PATH . 'vendor/autoload.php';
 
 
 const PROJECT_NAMESPACES = [
-    'ReactMvc',
+    'ReactWeb',
     'App'
 ];
 

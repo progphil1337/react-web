@@ -2,17 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Manager;
-
-use ReactWeb\Connection\Manager;
+namespace ReactWeb\DependencyInjection;
 
 /**
- * UserManager
+ * Singleton
  *
- * @package App\Manager
+ * @package ReactWeb\DependencyInjection
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
-class UserManager extends Manager
+interface Singleton
 {
+
 }

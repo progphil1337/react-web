@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-use ReactMvc\Config\DefaultConfig;
-use ReactMvc\Config\Exception\ConfigFileNotFoundException;
-use ReactMvc\Config\Exception\ConfigFileNotInterpretableException;
-use ReactMvc\DependencyInjection\ClassLookup;
-use ReactMvc\DependencyInjection\Injector;
-use ReactMvc\Enum\BasicActionEnum;
-use ReactMvc\Logger\Logger;
-use ReactMvc\Server;
-use ReactMvc\Routing\Exception\RoutesFileNotFoundException;
+use ReactWeb\Config\DefaultConfig;
+use ReactWeb\Config\Exception\ConfigFileNotFoundException;
+use ReactWeb\Config\Exception\ConfigFileNotInterpretableException;
+use ReactWeb\DependencyInjection\ClassLookup;
+use ReactWeb\DependencyInjection\Injector;
+use ReactWeb\Enum\BasicActionEnum;
+use ReactWeb\Logger\Logger;
+use ReactWeb\Server;
+use ReactWeb\Routing\Exception\RoutesFileNotFoundException;
 
 require_once 'autoload.php';
 
@@ -28,7 +28,7 @@ try {
 
     $server = Server::create($config, $injector);
 
-    $managerFactory = new \ReactMvc\Connection\ManagerFactory($config, $injector);
+    $managerFactory = new \ReactWeb\Connection\ManagerFactory($config, $injector);
 
     $managerFactory->registerManagers();
 
