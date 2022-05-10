@@ -28,7 +28,6 @@ class LoginHandler extends Handler implements RouteAwareHandler
 
     public function handle(Request $request, array $vars): Response
     {
-
         $hash = $this->sessionManager->createSession()->hash;
         /** @var \App\Entity\User $user */
         $user = $this->userManager->getById(1);

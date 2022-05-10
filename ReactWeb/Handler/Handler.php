@@ -6,6 +6,7 @@ use ReactWeb\DependencyInjection\Singleton;
 use ReactWeb\HTTP\Response;
 use ReactWeb\HTTP\ExceptionResponse;
 use ReactWeb\HTTP\HtmlResponse;
+use ReactWeb\Logger\Logger;
 use Twig\Environment as TwigEnvironment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -39,5 +40,10 @@ abstract class Handler implements Singleton
         } catch (LoaderError|RuntimeError|SyntaxError $e) {
             return new ExceptionResponse($e);
         }
+    }
+
+    public function __destruct()
+    {
+        Logger::info($this, 'Destroying');
     }
 }

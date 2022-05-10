@@ -53,4 +53,12 @@ final class Collector
     {
         return $this->sessions[$hash] ?? null;
     }
+
+    /**
+     * @return void
+     */
+    public function clear(): void
+    {
+        $this->sessions = [];
+    }
 }

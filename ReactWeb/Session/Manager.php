@@ -36,8 +36,9 @@ final class Manager implements Singleton
      */
     public function __construct(private readonly Config $config)
     {
-        $this->directoryPath = PROJECT_PATH . DIRECTORY_SEPARATOR . $this->config->get('Session::file');
+        $this->directoryPath = PROJECT_PATH . DIRECTORY_SEPARATOR . $this->config->get('Session::directory');
         $this->filePath = sprintf('%s%s', $this->directoryPath, self::DATABASE_NAME);
+
         if (!file_exists($this->filePath)) {
             $this->createDatabase();
         }
@@ -45,6 +46,35 @@ final class Manager implements Singleton
         $this->collector = new Collector();
 
         $this->open();
+        if (!$this->config->get('Session::keep_on_restart')) {
+            $this->clear();
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function clear(): void
+    {
+        $this->database->query('DELETE FROM `session`');
+
+        $ignore = [
+            '.',
+            '..',
+            '.gitkeep',
+            self::DATABASE_NAME
+        ];
+
+        foreach (scandir($this->directoryPath) as $value) {
+            if (in_array($value, $ignore)) {
+                continue;
+            }
+
+            $path = $this->directoryPath . DIRECTORY_SEPARATOR . $value;
+            unlink($path);
+        }
+
+        $this->collector->clear();
     }
 
     /**
@@ -102,7 +132,7 @@ final class Manager implements Singleton
         }
 
         if ($session->expires < new DateTime()) {
-            unlink($this->getFilePath($session->file));
+            $file = $this->getFilePath($session->file);
             $this->collector->remove($hash);
 
             $statement = $this->database->prepare('DELETE FROM `session` WHERE `hash` = :hash');
@@ -110,6 +140,8 @@ final class Manager implements Singleton
             $statement->execute();
 
             unset($session);
+
+            unlink($file);
 
             return null;
         }
@@ -205,6 +237,5 @@ CREATE TABLE `session` (
 )
 SQL
         );
-
     }
 }

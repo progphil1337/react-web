@@ -106,7 +106,7 @@ final class Server
                     method: MethodEnum::from($request->getMethod()),
                     header: new Header(array_change_key_case($request->getHeaders(), CASE_LOWER)),
                     queryParams: $request->getQueryParams(),
-                    cookies: $request->getCookieParams()
+                    cookies: $request->getCookieParams(),
                 );
 
                 Logger::debug($this, sprintf('Incoming request %s %s (%s)', $r->method->value, $r->route, $r->uri));
