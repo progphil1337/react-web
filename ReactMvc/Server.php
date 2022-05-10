@@ -16,6 +16,7 @@ use ReactMvc\HTTP\MethodEnum;
 use ReactMvc\HTTP\Request;
 use ReactMvc\Routing\RouteHandleResolver;
 use FastRoute;
+use Throwable;
 
 /**
  * Main
@@ -23,10 +24,10 @@ use FastRoute;
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
-final class Main
+final class Server
 {
     private static ?self $instance = null;
-    private readonly Dispatcher $dispatcher;
+    private readonly Dispatcher $routeDispatcher;
 
     /**
      * @param Config $config
@@ -73,7 +74,7 @@ final class Main
         $routeHandler = new RouteHandleResolver($this->injector);
         $routeHandler->loadFromFile($routesFile);
 
-        $this->dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) use ($routeHandler) {
+        $this->routeDispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) use ($routeHandler) {
             foreach ($routeHandler->getRoutes() as $route) {
                 /** @var MethodEnum $httpMethod */
                 foreach ($route->httpMethods as $httpMethod) {
@@ -116,7 +117,7 @@ final class Main
                 }
                 $uri = rawurldecode($uri);
 
-                $routeInfo = $this->dispatcher->dispatch($r->method->value, $uri);
+                $routeInfo = $this->routeDispatcher->dispatch($r->method->value, $uri);
 
                 /** @var \ReactMvc\Routing\Route $route */
                 $route = $routeInfo[1] ?? null;
@@ -137,5 +138,6 @@ final class Main
 
         Logger::info($this, sprintf('Server running on %s', $uri));
         $httpServer->listen($socketServer);
+        $httpServer->on('error', function (Throwable $t) { echo $t; });
     }
 }

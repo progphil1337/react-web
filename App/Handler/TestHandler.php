@@ -2,6 +2,7 @@
 
 namespace App\Handler;
 
+use App\Manager\UserManager;
 use ReactMvc\Handler\Handler;
 use ReactMvc\HTTP\Response;
 use ReactMvc\HTTP\Request;
@@ -16,6 +17,11 @@ use ReactMvc\Routing\RouteAwareHandler;
  */
 class TestHandler extends Handler implements RouteAwareHandler
 {
+
+    public function __construct(private readonly UserManager $userManager) {
+
+    }
+
     /**
      * @param \ReactMvc\HTTP\Request $request
      * @param array $vars
@@ -23,8 +29,11 @@ class TestHandler extends Handler implements RouteAwareHandler
      */
     public function handle(Request $request, array $vars): Response
     {
+        $username = $this->userManager->getOneBy('session_id', $request->getSession()->hash);
+
         return $this->render('test', [
-            'session_id' => $request->getSession()->hash
+            'session_id' => $request->getSession()->hash,
+            'username' => $username->name
         ]);
     }
 }

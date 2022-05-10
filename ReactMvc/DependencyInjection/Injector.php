@@ -34,7 +34,6 @@ final class Injector
 
                 return null;
             }
-
             $constructor = $reflectionClass->getConstructor();
 
             if ($constructor === null) {
@@ -52,14 +51,19 @@ final class Injector
 
                 $dependencies = [];
 
-                foreach ($constructor->getParameters() as $parameter) {
-                    $name = $this->lookup->getResolvedClassName($parameter->getType()->getName());
+                if (!array_key_exists('__construct', $methods)) {
+                    foreach ($constructor->getParameters() as $parameter) {
+                        $name = $this->lookup->getResolvedClassName($parameter->getType()->getName());
 
-                    $dependency = $this->create($name);
+                        $dependency = $this->create($name);
 
-                    $this->lookup->register($dependency);
+                        $this->lookup->register($dependency);
 
-                    $dependencies[] = $dependency;
+                        $dependencies[] = $dependency;
+                    }
+                } else {
+                    $dependencies = $methods['__construct'];
+                    unset($methods['__construct']);
                 }
 
                 try {

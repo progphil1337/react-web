@@ -35,7 +35,6 @@ final class ClassLookup
 
             Logger::info($this, sprintf('Registering class %s', get_class($o)));
 
-            echo 'Register ' . $this->getResolvedClassName($o) . PHP_EOL;
             $this->lookup[$this->getResolvedClassName($o)] = $o;
         }
 

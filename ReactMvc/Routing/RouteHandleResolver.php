@@ -101,7 +101,7 @@ final class RouteHandleResolver
         // create RouteAwareHandler
         if ($handler === null) {
 
-            $classPath = "App\\{$handlerName}";
+            $classPath = sprintf('App\%s', $handlerName);
 
             /** @var \ReactMvc\Routing\RouteAwareHandler $handler */
             $handler = self::$injector->create($classPath);
@@ -132,7 +132,6 @@ final class RouteHandleResolver
                 return $result;
             }
         }
-
         return $handler->handle($request, $vars);
     }
 
