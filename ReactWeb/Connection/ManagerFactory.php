@@ -46,7 +46,7 @@ final class ManagerFactory
                         $this->connectionManager->getConnection(),
                     $config['table'],
                     sprintf('App\%s', $config['entity']),
-                    $config['primary_key'] ?? null
+                    $config['primary_key']
                 ]
             ]);
         }

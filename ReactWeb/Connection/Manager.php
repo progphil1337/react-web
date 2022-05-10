@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ReactWeb\Connection;
 
+use InvalidArgumentException;
 use PDO;
 use ReactWeb\DependencyInjection\Singleton;
 
@@ -20,17 +21,44 @@ abstract class Manager implements Singleton
         protected readonly DatabaseConnection $connection,
         protected readonly string $table,
         protected readonly string $entityClassName,
-        protected readonly ?string $primaryKey = null
+        protected readonly string $primaryKey
     )
     {
 
     }
 
+    public function save(object $o): bool
+    {
+        if (!$o instanceof $this->entityClassName) {
+            throw new InvalidArgumentException('Cannot save entity in this manager');
+        }
+
+        $columnValues = get_object_vars($o);
+
+        $updateStr = '';
+        $updateParams = [];
+        foreach ($columnValues as $name => $val) {
+            $updateStr .= sprintf('`%s` = :%s, ', $this->formatToSQLColumnName($name), $name);
+            $updateParams[sprintf(':%s', $name)] = $val;
+        }
+
+        $updateStr = substr($updateStr, 0, -2);
+
+        $queryStr = sprintf(
+            'UPDATE `%s` SET %s WHERE `%s` = "%s"', $this->table, $updateStr, $this->primaryKey, $o->{$this->formatToEntityColumnName($this->primaryKey)}
+        );
+
+        $statement = $this->connection->getSQL()->prepare($queryStr);
+        $statement->execute($updateParams);
+
+        return $statement->rowCount() === 1;
+    }
+
+
     /**
      * @param string $column
      * @param mixed $val
      * @return object|null
-     * @throws \ReflectionException
      */
     public function getOneBy(string $column, mixed $val): ?object
     {
@@ -95,7 +123,7 @@ abstract class Manager implements Singleton
     }
 
     /**
-     * @param array<string,mixed> $row
+     * @param array $row
      * @return object
      * @throws \ReflectionException
      */
