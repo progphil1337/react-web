@@ -10,12 +10,11 @@ use PDO;
  * DatabaseConnection
  *
  * @package ReactWeb\Connection
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class DatabaseConnection
 {
-    private readonly PDO $pdo;
+    public readonly PDO $pdo;
 
     public function __construct(
         private readonly string $username,
@@ -27,11 +26,6 @@ class DatabaseConnection
     )
     {
         $this->connect();
-    }
-
-    public function getSQL(): PDO
-    {
-        return $this->pdo;
     }
 
     private function connect(): void

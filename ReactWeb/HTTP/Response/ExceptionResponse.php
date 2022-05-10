@@ -1,16 +1,18 @@
 <?php
 
-namespace ReactWeb\HTTP;
+declare(strict_types=1);
+
+namespace ReactWeb\HTTP\Response;
 
 use Exception;
 use JetBrains\PhpStorm\Pure;
+use ReactWeb\HTTP\Response;
 
 /**
  * ExceptionResponse
  *
  * @package ReactWeb\HTTP
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class ExceptionResponse extends Response
 {

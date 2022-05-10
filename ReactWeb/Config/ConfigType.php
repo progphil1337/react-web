@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ReactWeb\Config;
 
 use ReactWeb\Config\Exception\ConfigTypeNotSupportedException;
@@ -10,8 +12,7 @@ use ReactWeb\Config\Interpreter\ConfigInterpreter;
  * ConfigType
  *
  * @package ReactWeb\Config
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 enum ConfigType: string
 {

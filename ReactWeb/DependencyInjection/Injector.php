@@ -10,8 +10,7 @@ use ReactWeb\Logger\Logger;
  * Injector
  *
  * @package ReactWeb\DependencyInjection
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 final class Injector
 {

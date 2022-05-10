@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ReactWeb\HTTP;
 
 use React\Http\Message\Response as HttpResponse;
@@ -8,8 +10,7 @@ use React\Http\Message\Response as HttpResponse;
  * Response
  *
  * @package ReactWeb\HTTP
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 abstract class Response
 {

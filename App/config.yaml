@@ -14,7 +14,7 @@ Session:
   lifetime: PT30M #30min
   use_cookie: true
   key: 'session_id'
-  keep_on_restart: true
+  keep_on_restart: false
 Connection:
   test_connection:
     username: root

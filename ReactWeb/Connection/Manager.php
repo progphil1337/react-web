@@ -12,8 +12,7 @@ use ReactWeb\DependencyInjection\Singleton;
  * Manager
  *
  * @package ReactWeb\Connection
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 abstract class Manager implements Singleton
 {
@@ -48,7 +47,7 @@ abstract class Manager implements Singleton
             'UPDATE `%s` SET %s WHERE `%s` = "%s"', $this->table, $updateStr, $this->primaryKey, $o->{$this->formatToEntityColumnName($this->primaryKey)}
         );
 
-        $statement = $this->connection->getSQL()->prepare($queryStr);
+        $statement = $this->connection->pdo->prepare($queryStr);
         $statement->execute($updateParams);
 
         return $statement->rowCount() === 1;
@@ -62,7 +61,7 @@ abstract class Manager implements Singleton
      */
     public function getOneBy(string $column, mixed $val): ?object
     {
-        $statement = $this->connection->getSQL()->prepare(sprintf('SELECT * FROM `%s` WHERE `%s` = :%s', $this->table, $column, $column));
+        $statement = $this->connection->pdo->prepare(sprintf('SELECT * FROM `%s` WHERE `%s` = :%s', $this->table, $column, $column));
         $statement->execute([sprintf(':%s', $column) => $val]);
 
         if ($statement->rowCount() === 0) {

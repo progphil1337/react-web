@@ -18,8 +18,7 @@ use SQLite3;
  * Manager
  *
  * @package ReactWeb\Session
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 final class Manager implements Singleton
 {
@@ -237,5 +236,18 @@ CREATE TABLE `session` (
 )
 SQL
         );
+    }
+
+    /**
+     * @param \ReactWeb\Session\Session $session
+     * @return bool
+     */
+    public function save(Session $session): bool
+    {
+        $statement = $this->database->prepare('UPDATE `session` SET `file` = :file, `expires` = :expires');
+        $statement->bindValue(':file', $session->file);
+        $statement->bindValue('expires', $session->expires->format('Y-m-d H:i:s'));
+
+        return $statement->execute() !== false;
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ReactWeb;
 
 use FastRoute\Dispatcher;
@@ -10,9 +12,9 @@ use React\Socket\SocketServer;
 use ReactWeb\Config\Config;
 use ReactWeb\DependencyInjection\Injector;
 use ReactWeb\Logger\Logger;
-use ReactWeb\HTTP\ExceptionResponse;
+use ReactWeb\HTTP\Response\ExceptionResponse;
 use ReactWeb\HTTP\Header;
-use ReactWeb\HTTP\MethodEnum;
+use ReactWeb\HTTP\Enum\Method;
 use ReactWeb\HTTP\Request;
 use ReactWeb\Routing\RouteHandleResolver;
 use FastRoute;
@@ -21,8 +23,7 @@ use Throwable;
 /**
  * Main
  *
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 final class Server
 {
@@ -36,7 +37,6 @@ final class Server
      */
     public static function create(Config $config, Injector $injector): self
     {
-
         if (!self::$instance instanceof self) {
             self::$instance = new self($config, $injector);
         }
@@ -76,7 +76,7 @@ final class Server
 
         $this->routeDispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) use ($routeHandler) {
             foreach ($routeHandler->getRoutes() as $route) {
-                /** @var MethodEnum $httpMethod */
+                /** @var Method $httpMethod */
                 foreach ($route->httpMethods as $httpMethod) {
                     $r->addRoute($httpMethod->value, $route->route, $route);
                 }
@@ -103,7 +103,7 @@ final class Server
                 $r = new Request(
                     uri: $request->getUri(),
                     route: $request->getUri()->getPath(),
-                    method: MethodEnum::from($request->getMethod()),
+                    method: Method::from($request->getMethod()),
                     header: new Header(array_change_key_case($request->getHeaders(), CASE_LOWER)),
                     queryParams: $request->getQueryParams(),
                     cookies: $request->getCookieParams(),
@@ -138,6 +138,8 @@ final class Server
 
         Logger::info($this, sprintf('Server running on %s', $uri));
         $httpServer->listen($socketServer);
-        $httpServer->on('error', function (Throwable $t) { echo $t; });
+        $httpServer->on('error', function (Throwable $t) {
+            echo $t;
+        });
     }
 }

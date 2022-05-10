@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace ReactWeb\Session;
 
-use ReactWeb\Enum\BasicActionEnum;
+use ReactWeb\Enum\BasicAction;
+use ReactWeb\HTTP\Response\RedirectResponse;
 use ReactWeb\Logger\Logger;
 use ReactWeb\Middleware\Middleware as AbstractMiddleware;
 use ReactWeb\Config\Config;
 use ReactWeb\HTTP\Response;
-use ReactWeb\HTTP\RedirectResponse;
 
 /**
  * Middleware
  *
  * @package ReactWeb\Session
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class Middleware extends AbstractMiddleware
 {
@@ -32,11 +31,11 @@ class Middleware extends AbstractMiddleware
     }
 
     /**
-     * @return \ReactWeb\Enum\BasicActionEnum|\ReactWeb\HTTP\Response
+     * @return \ReactWeb\Enum\BasicAction|\ReactWeb\HTTP\Response
      */
-    public function evaluate(): BasicActionEnum|Response
+    public function evaluate(): BasicAction|Response
     {
-        $cookies = $this->getRequest()->cookies;
+        $cookies = $this->request->cookies;
 
         if (!array_key_exists($this->key, $cookies)) {
             return new RedirectResponse('/');
@@ -56,8 +55,8 @@ class Middleware extends AbstractMiddleware
             return $response;
         }
 
-        $this->getRequest()->setSession($session);
+        $this->request->setSession($session);
 
-        return BasicActionEnum::SUCCESS;
+        return BasicAction::SUCCESS;
     }
 }

@@ -10,8 +10,7 @@ use ReactWeb\Connection\Manager;
  * UserManager
  *
  * @package App\Manager
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class UserManager extends Manager
 {

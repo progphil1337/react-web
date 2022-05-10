@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ReactWeb\Handler;
 
 use ReactWeb\DependencyInjection\Singleton;
 use ReactWeb\HTTP\Response;
-use ReactWeb\HTTP\ExceptionResponse;
-use ReactWeb\HTTP\HtmlResponse;
+use ReactWeb\HTTP\Response\ExceptionResponse;
+use ReactWeb\HTTP\Response\HTMLResponse;
 use ReactWeb\Logger\Logger;
 use Twig\Environment as TwigEnvironment;
 use Twig\Error\LoaderError;
@@ -16,8 +18,7 @@ use Twig\Error\SyntaxError;
  * AbstractHandler
  *
  * @package ReactWeb\Handler
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 abstract class Handler implements Singleton
 {
@@ -36,7 +37,7 @@ abstract class Handler implements Singleton
     protected function render(string $template, array $args = []): Response
     {
         try {
-            return new HtmlResponse($this->twig->render("{$template}.twig", $args));
+            return new HTMLResponse($this->twig->render("{$template}.twig", $args));
         } catch (LoaderError|RuntimeError|SyntaxError $e) {
             return new ExceptionResponse($e);
         }

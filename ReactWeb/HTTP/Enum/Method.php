@@ -1,15 +1,16 @@
 <?php
 
-namespace ReactWeb\HTTP;
+declare(strict_types=1);
+
+namespace ReactWeb\HTTP\Enum;
 
 /**
- * MethodEnum
+ * Method
  *
  * @package ReactWeb\HTTP
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
-enum MethodEnum: string
+enum Method: string
 {
     case GET = 'GET';
     case POST = 'POST';

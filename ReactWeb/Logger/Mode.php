@@ -8,8 +8,7 @@ namespace ReactWeb\Logger;
  * Mode
  *
  * @package ReactWeb\Logger
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 enum Mode: int
 {

@@ -12,8 +12,7 @@ use ReactWeb\Routing\RouteAwareHandler;
  * TestHandler
  *
  * @package App\Handler
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class TestHandler extends Handler implements RouteAwareHandler
 {
@@ -25,7 +24,7 @@ class TestHandler extends Handler implements RouteAwareHandler
     /**
      * @param \ReactWeb\HTTP\Request $request
      * @param array $vars
-     * @return \ReactWeb\HTTP\HtmlResponse
+     * @return \ReactWeb\HTTP\Response\HTMLResponse
      */
     public function handle(Request $request, array $vars): Response
     {

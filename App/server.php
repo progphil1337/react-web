@@ -7,7 +7,7 @@ use ReactWeb\Config\Exception\ConfigFileNotFoundException;
 use ReactWeb\Config\Exception\ConfigFileNotInterpretableException;
 use ReactWeb\DependencyInjection\ClassLookup;
 use ReactWeb\DependencyInjection\Injector;
-use ReactWeb\Enum\BasicActionEnum;
+use ReactWeb\Enum\BasicAction;
 use ReactWeb\Logger\Logger;
 use ReactWeb\Server;
 use ReactWeb\Routing\Exception\RoutesFileNotFoundException;
@@ -36,5 +36,5 @@ try {
 } catch (RoutesFileNotFoundException|ConfigFileNotFoundException|ConfigFileNotInterpretableException $e) {
     echo $e->getMessage();
 
-    exit(BasicActionEnum::ERROR);
+    exit(BasicAction::ERROR);
 }

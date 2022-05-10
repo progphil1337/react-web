@@ -12,8 +12,7 @@ use ReactWeb\Logger\Logger;
  * ManagerFactory
  *
  * @package ReactWeb\Connection
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 final class ManagerFactory
 {

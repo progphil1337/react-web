@@ -8,8 +8,7 @@ namespace ReactWeb\Session;
  * Session
  *
  * @package ReactWeb\Session
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class Session
 {
@@ -57,6 +56,12 @@ class Session
         return $this->metaData[$key];
     }
 
+    public function extend(\DateInterval $interval): bool
+    {
+        $this->expires->add($interval);
+        return $this->manager->save($this);
+    }
+
     /**
      * @param string $key
      * @param mixed $value
@@ -67,14 +72,6 @@ class Session
         $this->metaData[$key] = $value;
 
         return $this;
-    }
-
-    /**
-     * @return void
-     */
-    private function read(): void
-    {
-        $this->metaData = json_decode(base64_decode(file_get_contents($this->filePath)), true);
     }
 
     /**
@@ -89,4 +86,13 @@ class Session
     {
         $this->save();
     }
+
+    /**
+     * @return void
+     */
+    private function read(): void
+    {
+        $this->metaData = json_decode(base64_decode(file_get_contents($this->filePath)), true);
+    }
+
 }

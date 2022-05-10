@@ -1,16 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ReactWeb\HTTP;
 
-use ReactWeb\DependencyInjection\Singleton;
+use ReactWeb\HTTP\Enum\Method;
 use ReactWeb\Session\Session;
 
 /**
  * Request
  *
  * @package ReactWeb\HTTP
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 final class Request
 {
@@ -20,7 +21,7 @@ final class Request
     /**
      * @param string $uri
      * @param string $route
-     * @param MethodEnum $method
+     * @param Method $method
      * @param Header $header
      * @param array $queryParams
      * @param array $cookies
@@ -28,7 +29,7 @@ final class Request
     public function __construct(
         public readonly string $uri,
         public readonly string $route,
-        public readonly MethodEnum $method,
+        public readonly Method $method,
         public readonly Header $header,
         public readonly array $queryParams,
         public readonly array $cookies

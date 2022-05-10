@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace ReactWeb\HTTP;
+namespace ReactWeb\HTTP\Response;
+
+use ReactWeb\HTTP\Response;
 
 /**
  * RedirectResponse
  *
  * @package ReactWeb\HTTP
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class RedirectResponse extends Response
 {

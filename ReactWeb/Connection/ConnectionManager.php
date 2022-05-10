@@ -11,8 +11,7 @@ use ReactWeb\DependencyInjection\Singleton;
  * ConnectionManager
  *
  * @package ReactWeb\Connection
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class ConnectionManager implements Singleton
 {

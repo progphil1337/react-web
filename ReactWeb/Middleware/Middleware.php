@@ -4,32 +4,30 @@ declare(strict_types=1);
 
 namespace ReactWeb\Middleware;
 
-use ReactWeb\Enum\BasicActionEnum;
+use ReactWeb\Enum\BasicAction;
+use ReactWeb\Handler\Handler;
 use ReactWeb\HTTP\Response;
 use ReactWeb\HTTP\Request;
+use ReactWeb\Routing\RouteAwareHandler;
 
 /**
  * Middleware
  *
  * @package ReactWeb\Middleware
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 abstract class Middleware
 {
-    private readonly Request $request;
+    protected readonly Request $request;
+    protected readonly RouteAwareHandler $handler;
 
-    public function createInstance(Request $request): self
+    public function createInstance(Request $request, RouteAwareHandler $handler): self
     {
         $this->request = $request;
+        $this->handler = $handler;
 
         return $this;
     }
 
-    protected function getRequest(): Request
-    {
-        return $this->request;
-    }
-
-    abstract public function evaluate(): BasicActionEnum|Response;
+    abstract public function evaluate(): BasicAction|Response;
 }

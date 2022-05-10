@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ReactWeb\Logger;
 
 use DateTime;
@@ -9,8 +11,7 @@ use ReactWeb\Config\Config;
  * Logger
  *
  * @package ReactWeb
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 final class Logger
 {

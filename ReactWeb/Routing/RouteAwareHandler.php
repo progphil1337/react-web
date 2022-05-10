@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ReactWeb\Routing;
 
-use ReactWeb\HTTP\MethodEnum;
+use ReactWeb\HTTP\Enum\Method;
 use ReactWeb\HTTP\Response;
 use ReactWeb\HTTP\Request;
 
@@ -10,8 +12,7 @@ use ReactWeb\HTTP\Request;
  * RouteAwareHandler
  *
  * @package ReactWeb\Routing
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 interface RouteAwareHandler
 {

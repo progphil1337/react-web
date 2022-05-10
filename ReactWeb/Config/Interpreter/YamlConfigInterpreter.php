@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ReactWeb\Config\Interpreter;
 
 use Symfony\Component\Yaml\Yaml;
@@ -8,8 +10,7 @@ use Symfony\Component\Yaml\Yaml;
  * YamlConfigInterpreter
  *
  * @package ReactWeb\Config\Interpreter
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 final class YamlConfigInterpreter implements ConfigInterpreter
 {

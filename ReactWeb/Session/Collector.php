@@ -8,8 +8,7 @@ namespace ReactWeb\Session;
  * Collector
  *
  * @package ReactWeb\Session
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 final class Collector
 {

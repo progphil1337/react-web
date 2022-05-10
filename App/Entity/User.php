@@ -8,8 +8,7 @@ namespace App\Entity;
  * User
  *
  * @package App\Entity
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class User
 {

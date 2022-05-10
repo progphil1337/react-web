@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ReactWeb\Config;
 
 use ReactWeb\Config\Exception\ConfigFileNotFoundException;
@@ -12,8 +14,7 @@ use ReactWeb\DependencyInjection\Singleton;
  * AbstractConfig
  *
  * @package ReactWeb\App\Exception\Config
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 abstract class Config implements Singleton
 {
@@ -40,10 +41,11 @@ abstract class Config implements Singleton
 
     /**
      * @param string|null $configFile
-     * @throws Exception\ConfigTypeNotSupportedException
-     * @throws Exception\UnableToCreateConfigException
+     * @return array
+     * @throws \ReactWeb\Config\Exception\ConfigTypeNotSupportedException
+     * @throws \ReactWeb\Config\Exception\UnableToCreateConfigException
      */
-    private function interpretConfig(string $configFile = null): array
+    private function interpretConfig(?string $configFile = null): array
     {
         $configFile = $configFile ?? $this->configFile;
         $explodedConfigFile = explode('.', strtolower($configFile));

@@ -7,7 +7,7 @@ namespace App\Handler;
 use App\Manager\UserManager;
 use ReactWeb\Handler\Handler;
 use ReactWeb\HTTP\Response;
-use ReactWeb\HTTP\HtmlResponse;
+use ReactWeb\HTTP\Response\HTMLResponse;
 use ReactWeb\HTTP\Request;
 use ReactWeb\Routing\RouteAwareHandler;
 use ReactWeb\Session\Manager;
@@ -16,8 +16,7 @@ use ReactWeb\Session\Manager;
  * LoginHandler
  *
  * @package App\Handler
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class LoginHandler extends Handler implements RouteAwareHandler
 {
@@ -35,7 +34,7 @@ class LoginHandler extends Handler implements RouteAwareHandler
 
         $success = $this->userManager->save($user);
 
-        $response = new HtmlResponse($success ? 'Hash gesetzt' : 'Error');
+        $response = new HTMLResponse($success ? 'Hash gesetzt' : 'Error');
 
         $response->writeHeader('Set-Cookie', urlencode('session_id') . '=' . urlencode($hash));
 

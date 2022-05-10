@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ReactWeb\Routing;
 
 use ReactWeb\DependencyInjection\Injector;
 use ReactWeb\Logger\Logger;
-use ReactWeb\Enum\BasicActionEnum;
+use ReactWeb\Enum\BasicAction;
 use ReactWeb\Handler\Handler;
-use ReactWeb\HTTP\MethodEnum;
+use ReactWeb\HTTP\Enum\Method;
 use ReactWeb\HTTP\Response;
 use ReactWeb\HTTP\Request;
-use ReactWeb\HTTP\TextResponse;
+use ReactWeb\HTTP\Response\TextResponse;
 use ReactWeb\Routing\Exception\RoutesFileNotFoundException;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
@@ -18,8 +20,7 @@ use Twig\Environment;
  * RouteHandleResolver
  *
  * @package ReactWeb\Routing
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 final class RouteHandleResolver
 {
@@ -42,7 +43,7 @@ final class RouteHandleResolver
     /**
      * @throws RoutesFileNotFoundException
      */
-    public function loadFromFile(string $file): BasicActionEnum
+    public function loadFromFile(string $file): BasicAction
     {
         Logger::debug(RouteHandleResolver::class, sprintf('Loading routes from %s', $file));
 
@@ -55,7 +56,7 @@ final class RouteHandleResolver
             $route = new Route(
                 route: strtolower($info['route']),
                 handler: $handler,
-                httpMethods: array_map(fn(string $method): MethodEnum => MethodEnum::from(strtoupper($method)), $info['methods']),
+                httpMethods: array_map(fn(string $method): Method => Method::from(strtoupper($method)), $info['methods']),
                 middlewares: $info['middleware'] ?? []
             );
 
@@ -64,7 +65,7 @@ final class RouteHandleResolver
             $this->routes[] = $route;
         }
 
-        return BasicActionEnum::SUCCESS;
+        return BasicAction::SUCCESS;
     }
 
     /**
@@ -108,7 +109,9 @@ final class RouteHandleResolver
 
             if ($handler instanceof Handler) {
 
-                $handler->createInstance(self::$injector->create(Environment::class));
+                /** @var Environment $twigEnv */
+                $twigEnv = self::$injector->create(Environment::class);
+                $handler->createInstance($twigEnv);
             }
 
             self::cacheHandler($route, $handler);
@@ -117,12 +120,12 @@ final class RouteHandleResolver
         foreach ($route->middlewares as $className) {
             /** @var \ReactWeb\Middleware\Middleware $middleware */
             $middleware = self::$injector->create($className, [
-                'createInstance' => [$request]
+                'createInstance' => [$request, $handler]
             ]);
 
             $result = $middleware->evaluate();
 
-            if ($result instanceof BasicActionEnum && $result !== BasicActionEnum::SUCCESS) {
+            if ($result instanceof BasicAction && $result !== BasicAction::SUCCESS) {
                 Logger::error(RouteHandleResolver::class, 'Middleware not successful');
 
                 return new TextResponse('Not authorized');
