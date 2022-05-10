@@ -41,7 +41,9 @@ final class ManagerFactory
 
             $this->injector->create($managerClass, [
                 '__construct' => [
-                    $this->connectionManager->getConnection($config['connection']),
+                    array_key_exists('connection', $config) ?
+                        $this->connectionManager->getConnection($config['connection']) :
+                        $this->connectionManager->getConnection(),
                     $config['table'],
                     sprintf('App\%s', $config['entity']),
                     $config['primary_key'] ?? null

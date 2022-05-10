@@ -23,7 +23,7 @@ class ConnectionManager implements Singleton
     public function __construct(private readonly Config $config)
     {
         foreach ($this->config->get('Connection') as $key => $entry) {
-            if ($entry['main']) {
+            if (array_key_exists('main', $entry) && $entry['main']) {
                 $this->mainConnectionName = $key;
             }
         }

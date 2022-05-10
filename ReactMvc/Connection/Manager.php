@@ -26,6 +26,12 @@ abstract class Manager implements Singleton
 
     }
 
+    /**
+     * @param string $column
+     * @param mixed $val
+     * @return object|null
+     * @throws \ReflectionException
+     */
     public function getOneBy(string $column, mixed $val): ?object
     {
         $statement = $this->connection->getSQL()->prepare(sprintf('SELECT * FROM `%s` WHERE `%s` = :%s', $this->table, $column, $column));
@@ -38,12 +44,20 @@ abstract class Manager implements Singleton
         return $this->createEntity($statement->fetch(PDO::FETCH_ASSOC));
     }
 
+    /**
+     * @param int $id
+     * @return object|null
+     */
     public function getById(int $id): ?object
     {
         return $this->getOneBy('id', $id);
     }
 
-    private function formatToSQLColumnName(string $string): string
+    /**
+     * @param string $string
+     * @return string
+     */
+    protected function formatToSQLColumnName(string $string): string
     {
         $columnName = '';
 
@@ -58,20 +72,56 @@ abstract class Manager implements Singleton
         return $columnName;
     }
 
+    /**
+     * @param string $string
+     * @return string
+     */
+    protected function formatToEntityColumnName(string $string): string
+    {
+        $columnName = '';
+
+        $toUppercase = false;
+        foreach (str_split($string) as $char) {
+            if ($char === '_') {
+                $toUppercase = true;
+            } else {
+                $columnName .= $toUppercase ? strtoupper($char) : $char;
+
+                $toUppercase = false;
+            }
+        }
+
+        return $columnName;
+    }
+
+    /**
+     * @param array<string,mixed> $row
+     * @return object
+     * @throws \ReflectionException
+     */
     private function createEntity(array $row): object
     {
         $reflection = new \ReflectionClass($this->entityClassName);
 
-        if ($this->primaryKey !== null) {
-            $instance = $reflection->newInstanceArgs([$row[$this->primaryKey]]);
+        $constructor = $reflection->getConstructor();
+
+        if ($constructor !== null) {
+            $constructorParams = [];
+
+            foreach ($constructor->getParameters() as $parameter) {
+                $name = $this->formatToSQLColumnName($parameter->getName());
+
+                $constructorParams[] = $row[$name];
+                unset($row[$name]);
+            }
+
+            $instance = $reflection->newInstanceArgs($constructorParams);
         } else {
             $instance = $reflection->newInstance();
         }
 
-        foreach ($reflection->getProperties() as $attribute) {
-            if ($attribute->name !== $this->primaryKey) {
-                $instance->{$attribute->name} = $row[$this->formatToSQLColumnName($attribute->name)];
-            }
+        foreach ($row as $name => $val) {
+            $instance->{$this->formatToEntityColumnName($name)} = $val;
         }
 
         return $instance;
