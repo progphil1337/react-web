@@ -119,11 +119,9 @@ final class RouteHandleResolver
 
         foreach ($route->middlewares as $className) {
             /** @var \ReactWeb\Middleware\Middleware $middleware */
-            $middleware = self::$injector->create($className, [
-                'createInstance' => [$request, $handler]
-            ]);
+            $middleware = self::$injector->create($className);
 
-            $result = $middleware->evaluate();
+            $result = $middleware->evaluate($request, $handler);
 
             if ($result instanceof BasicAction && $result !== BasicAction::SUCCESS) {
                 Logger::error(RouteHandleResolver::class, 'Middleware not successful');

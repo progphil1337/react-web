@@ -161,7 +161,9 @@ final class Server
         $socketServer = new SocketServer($uri);
 
         Logger::info($this, sprintf('Server running on %s', $uri));
+
         $httpServer->listen($socketServer);
+
         $httpServer->on('error', function (Throwable $t) {
             echo $t;
         });

@@ -18,16 +18,5 @@ use ReactWeb\Routing\RouteAwareHandler;
  */
 abstract class Middleware
 {
-    protected readonly Request $request;
-    protected readonly RouteAwareHandler $handler;
-
-    public function createInstance(Request $request, RouteAwareHandler $handler): self
-    {
-        $this->request = $request;
-        $this->handler = $handler;
-
-        return $this;
-    }
-
-    abstract public function evaluate(): BasicAction|Response;
+    abstract public function evaluate(Request $request, RouteAwareHandler $handler): BasicAction|Response;
 }

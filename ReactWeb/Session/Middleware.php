@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace ReactWeb\Session;
 
 use ReactWeb\Enum\BasicAction;
+use ReactWeb\HTTP\Request;
 use ReactWeb\HTTP\Response\RedirectResponse;
 use ReactWeb\Logger\Logger;
 use ReactWeb\Middleware\Middleware as AbstractMiddleware;
 use ReactWeb\Config\Config;
 use ReactWeb\HTTP\Response;
+use ReactWeb\Routing\RouteAwareHandler;
 
 /**
  * Middleware
@@ -31,11 +33,13 @@ class Middleware extends AbstractMiddleware
     }
 
     /**
+     * @param \ReactWeb\HTTP\Request $request
+     * @param \ReactWeb\Routing\RouteAwareHandler $handler
      * @return \ReactWeb\Enum\BasicAction|\ReactWeb\HTTP\Response
      */
-    public function evaluate(): BasicAction|Response
+    public function evaluate(Request $request, RouteAwareHandler $handler): BasicAction|Response
     {
-        $cookies = $this->request->cookies;
+        $cookies = $request->cookies;
 
         if (!array_key_exists($this->key, $cookies)) {
             return new RedirectResponse('/');
@@ -55,7 +59,7 @@ class Middleware extends AbstractMiddleware
             return $response;
         }
 
-        $this->request->setSession($session);
+        $request->setSession($session);
 
         return BasicAction::SUCCESS;
     }
