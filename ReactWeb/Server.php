@@ -97,11 +97,35 @@ final class Server
             $port
         ]);
 
+        $getUrl = function (ServerRequestInterface $request): string {
+            $uri = $request->getUri();
+
+            $pattern = '%s://%s';
+            $args = [$uri->getScheme(), $uri->getHost()];
+
+            if ($uri->getPort() !== NULL) {
+                $pattern .= ':%s';
+                $args[] = $uri->getPort();
+            }
+
+            if ($uri->getPath() !== '') {
+                $pattern .= '%s';
+                $args[] = $uri->getPath();
+            }
+
+            if ($uri->getQuery() !== '') {
+                $pattern .= '?%s';
+                $args[] = $uri->getQuery();
+            }
+
+            return call_user_func_array('sprintf', [$pattern, ...$args]);
+        };
+
         $httpServer = new HttpServer(
-            function (ServerRequestInterface $request): Response {
+            function (ServerRequestInterface $request) use ($getUrl): Response {
 
                 $r = new Request(
-                    uri: $request->getUri(),
+                    uri: $getUrl($request),
                     route: $request->getUri()->getPath(),
                     method: Method::from($request->getMethod()),
                     header: new Header(array_change_key_case($request->getHeaders(), CASE_LOWER)),
