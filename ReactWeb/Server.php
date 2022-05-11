@@ -154,7 +154,7 @@ final class Server
                     return match ($routeInfo[0]) {
                         Dispatcher::METHOD_NOT_ALLOWED => new Response(405, ['Content-Type' => 'text/plain'], sprintf('Method %s not found', $r->method->value)),
                         Dispatcher::FOUND => $route->callHandler($r, $routeInfo[2])->toHttpResponse(),
-                        default => $this->filesystem->find($r->route)?->createResponse($this->config->get('Filesystem'))->toHttpResponse() ?? new Response(404, ['Content-Type' => 'text/plain'], sprintf('There is nothing found at %s', $uri)),
+                        Dispatcher::NOT_FOUND => $this->filesystem->find($r->route)?->createResponse($this->config->get('Filesystem'))->toHttpResponse() ?? new Response(404, ['Content-Type' => 'text/plain'], sprintf('There is nothing found at %s', $uri)),
                     };
                 } catch (\Exception $e) {
                     return (new ExceptionResponse($e))->toHttpResponse();

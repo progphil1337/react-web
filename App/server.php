@@ -5,6 +5,7 @@ declare(strict_types=1);
 use ReactWeb\Config\DefaultConfig;
 use ReactWeb\Config\Exception\ConfigFileNotFoundException;
 use ReactWeb\Config\Exception\ConfigFileNotInterpretableException;
+use ReactWeb\Connection\ManagerFactory;
 use ReactWeb\DependencyInjection\ClassLookup;
 use ReactWeb\DependencyInjection\Injector;
 use ReactWeb\Enum\BasicAction;
@@ -37,8 +38,7 @@ try {
 
     $server = Server::create($config, $injector);
 
-    $managerFactory = new \ReactWeb\Connection\ManagerFactory($config, $injector);
-
+    $managerFactory = new ManagerFactory($config, $injector);
     $managerFactory->registerManagers();
 
     $server->run();
