@@ -17,7 +17,7 @@ use ReactWeb\HTTP\Response\FileResponse;
  */
 class File
 {
-    
+
     private readonly string $name;
 
     /**
