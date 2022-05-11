@@ -63,7 +63,7 @@ final class Server
      */
     public function run(): void
     {
-        $this->loadRoutes(PROJECT_PATH . 'config' . DIRECTORY_SEPARATOR . 'routes.yaml');
+        $this->loadRoutes(PROJECT_PATH . $this->config->get('Routes'));
         $this->start($this->config->get('HttpServer::ip'), (int)$this->config->get('HttpServer::port'));
     }
 

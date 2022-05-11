@@ -1,4 +1,5 @@
-Config:
+Routes: 'config/routes.yaml'
+Extends:
   - http_server.yaml
   - logging.yaml
   - session.yaml

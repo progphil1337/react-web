@@ -19,17 +19,15 @@ const APP_PATH = PROJECT_PATH . 'App' . DIRECTORY_SEPARATOR;
 $configFile = PROJECT_PATH . 'config.yaml';
 
 try {
-    $configList = new DefaultConfig($configFile);
+    $config = new DefaultConfig($configFile);
 
-    $config = null;
-    foreach ($configList->get('Config') as $file) {
+    foreach ($config->get('Extends') as $file) {
         $filePath = PROJECT_PATH . 'config' . DIRECTORY_SEPARATOR . $file;
-        if ($config === null) {
-            $config = new DefaultConfig($filePath);
-        } else {
-            $config->merge(new DefaultConfig($filePath));
-        }
+
+        $config->merge(new DefaultConfig(PROJECT_PATH . 'config' . DIRECTORY_SEPARATOR . $file));
     }
+
+    $config->remove('Extends');
 
     Logger::setConfig($config);
 

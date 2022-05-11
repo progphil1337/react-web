@@ -51,6 +51,17 @@ abstract class Config implements Singleton
     }
 
     /**
+     * @param string $key
+     * @return $this
+     */
+    public function remove(string $key): self
+    {
+        unset($this->data[$key]);
+
+        return $this;
+    }
+
+    /**
      * @param string|null $configFile
      * @return array
      * @throws \ReactWeb\Config\Exception\ConfigTypeNotSupportedException
