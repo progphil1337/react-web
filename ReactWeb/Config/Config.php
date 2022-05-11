@@ -40,6 +40,17 @@ abstract class Config implements Singleton
     }
 
     /**
+     * @param \ReactWeb\Config\Config $c
+     * @return $this
+     */
+    public function merge(Config $c): self
+    {
+        $this->data = array_merge($this->data, $c->data);
+
+        return $this;
+    }
+
+    /**
      * @param string|null $configFile
      * @return array
      * @throws \ReactWeb\Config\Exception\ConfigTypeNotSupportedException

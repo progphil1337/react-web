@@ -16,10 +16,21 @@ require_once 'autoload.php';
 
 const APP_PATH = PROJECT_PATH . 'App' . DIRECTORY_SEPARATOR;
 
-$config = APP_PATH . 'config.yaml';
+$configFile = PROJECT_PATH . 'config.yaml';
 
 try {
-    $config = new DefaultConfig($config);
+    $configList = new DefaultConfig($configFile);
+
+    $config = null;
+    foreach ($configList->get('Config') as $file) {
+        $filePath = PROJECT_PATH . 'config' . DIRECTORY_SEPARATOR . $file;
+        if ($config === null) {
+            $config = new DefaultConfig($filePath);
+        } else {
+            $config->merge(new DefaultConfig($filePath));
+        }
+    }
+
     Logger::setConfig($config);
 
     $lookup = new ClassLookup();
@@ -34,7 +45,7 @@ try {
 
     $server->run();
 } catch (RoutesFileNotFoundException|ConfigFileNotFoundException|ConfigFileNotInterpretableException $e) {
-    echo $e->getMessage();
+    echo sprintf('%s\n%s', $e->getMessage(), $e->getFile());
 
-    exit(BasicAction::ERROR);
+    exit(BasicAction::ERROR->value);
 }

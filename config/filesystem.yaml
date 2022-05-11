@@ -1,0 +1,4 @@
+Filesystem:
+  public_directory: www
+  cache_duration: 3600
+  cache_control: public, max-age=%cache_duration%

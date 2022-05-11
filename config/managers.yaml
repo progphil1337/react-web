@@ -1,0 +1,6 @@
+Managers:
+  Manager\UserManager:
+    connection: test_connection
+    table: users
+    entity: Entity\User
+    primary_key: id

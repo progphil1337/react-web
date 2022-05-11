@@ -1,0 +1,6 @@
+Session:
+  directory: 'data/session/'
+  lifetime: PT30M #30min
+  use_cookie: true
+  key: 'session_id'
+  keep_on_restart: false

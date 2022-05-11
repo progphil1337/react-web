@@ -1,0 +1,7 @@
+Logging:
+  enabled: 1
+  show_time: 1
+  show_class: 1
+  type: 3 #1 = console, 2 = file, 3 = both
+  mode: 3 #0 = debug, 1 = info, 2 = notice, 3 = error
+  log_file: 'console.log'
