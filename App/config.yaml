@@ -15,6 +15,10 @@ Session:
   use_cookie: true
   key: 'session_id'
   keep_on_restart: false
+Filesystem:
+  public_directory: www
+  cache_duration: 3600
+  cache_control: public, max-age=%cache_duration%
 Connection:
   test_connection:
     username: root

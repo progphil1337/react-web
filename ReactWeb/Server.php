@@ -11,6 +11,7 @@ use React\Http\Message\Response;
 use React\Socket\SocketServer;
 use ReactWeb\Config\Config;
 use ReactWeb\DependencyInjection\Injector;
+use ReactWeb\Filesystem\Filesystem;
 use ReactWeb\Logger\Logger;
 use ReactWeb\HTTP\Response\ExceptionResponse;
 use ReactWeb\HTTP\Header;
@@ -38,7 +39,7 @@ final class Server
     public static function create(Config $config, Injector $injector): self
     {
         if (!self::$instance instanceof self) {
-            self::$instance = new self($config, $injector);
+            self::$instance = new self($config, $injector, new Filesystem($config));
         }
 
         return self::$instance;
@@ -48,7 +49,11 @@ final class Server
      * @param Config $config
      * @param \ReactWeb\DependencyInjection\Injector $injector
      */
-    private function __construct(private readonly Config $config, private readonly Injector $injector)
+    private function __construct(
+        private readonly Config $config,
+        private readonly Injector $injector,
+        private readonly Filesystem $filesystem
+    )
     {
     }
 
@@ -121,8 +126,10 @@ final class Server
             return call_user_func_array('sprintf', [$pattern, ...$args]);
         };
 
+        $filesystem = $this->filesystem;
+
         $httpServer = new HttpServer(
-            function (ServerRequestInterface $request) use ($getUrl): Response {
+            function (ServerRequestInterface $request) use ($getUrl, $filesystem): Response {
 
                 $r = new Request(
                     uri: $getUrl($request),
@@ -150,7 +157,7 @@ final class Server
                     return match ($routeInfo[0]) {
                         Dispatcher::METHOD_NOT_ALLOWED => new Response(405, ['Content-Type' => 'text/plain'], sprintf('Method %s not found', $r->method->value)),
                         Dispatcher::FOUND => $route->callHandler($r, $routeInfo[2])->toHttpResponse(),
-                        default => new Response(404, ['Content-Type' => 'text/plain'], sprintf('Route %s not found', $uri)),
+                        default => $filesystem->find($r->route)?->createResponse($this->config->get('Filesystem'))->toHttpResponse() ?? new Response(404, ['Content-Type' => 'text/plain'], sprintf('Route %s not found', $uri)),
                     };
                 } catch (\Exception $e) {
                     return (new ExceptionResponse($e))->toHttpResponse();
