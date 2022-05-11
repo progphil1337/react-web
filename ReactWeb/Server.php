@@ -125,7 +125,7 @@ final class Server
 
             return call_user_func_array('sprintf', [$pattern, ...$args]);
         };
-        
+
         $httpServer = new HttpServer(
             function (ServerRequestInterface $request) use ($getUrl): Response {
 
@@ -155,7 +155,7 @@ final class Server
                     return match ($routeInfo[0]) {
                         Dispatcher::METHOD_NOT_ALLOWED => new Response(405, ['Content-Type' => 'text/plain'], sprintf('Method %s not found', $r->method->value)),
                         Dispatcher::FOUND => $route->callHandler($r, $routeInfo[2])->toHttpResponse(),
-                        default => $this->filesystem->find($r->route)?->createResponse($this->config->get('Filesystem'))->toHttpResponse() ?? new Response(404, ['Content-Type' => 'text/plain'], sprintf('Route %s not found', $uri)),
+                        default => $this->filesystem->find($r->route)?->createResponse($this->config->get('Filesystem'))->toHttpResponse() ?? new Response(404, ['Content-Type' => 'text/plain'], sprintf('There is nothing found at %s', $uri)),
                     };
                 } catch (\Exception $e) {
                     return (new ExceptionResponse($e))->toHttpResponse();

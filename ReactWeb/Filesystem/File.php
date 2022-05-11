@@ -26,7 +26,7 @@ class File
      */
     public function __construct(private readonly string $path)
     {
-        if (!file_exists($path)) {
+        if (!file_exists($path) || is_dir($this->path)) {
             throw new FileNotFoundException($path);
         }
 

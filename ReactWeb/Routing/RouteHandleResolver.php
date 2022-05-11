@@ -54,9 +54,9 @@ final class RouteHandleResolver
         $routes = Yaml::parseFile($file);
         foreach ($routes as $handler => $info) {
             $route = new Route(
-                route: strtolower($info['route']),
+                route: mb_strtolower($info['route']),
                 handler: $handler,
-                httpMethods: array_map(fn(string $method): Method => Method::from(strtoupper($method)), $info['methods']),
+                httpMethods: array_map(fn(string $method): Method => Method::from(mb_strtoupper($method)), $info['methods']),
                 middlewares: $info['middleware'] ?? []
             );
 

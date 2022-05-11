@@ -32,7 +32,7 @@ enum FileType: string
         $split = explode('.', $path);
         $ending = end($split);
 
-        return self::tryFrom(strtolower($ending));
+        return self::tryFrom(mb_strtolower($ending));
     }
 
     public function getContentType(): string

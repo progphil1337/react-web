@@ -89,8 +89,8 @@ abstract class Manager implements Singleton
         $columnName = '';
 
         foreach (str_split($string) as $char) {
-            if ($char === strtoupper($char)) {
-                $columnName .= sprintf('_%s', strtolower($char));
+            if ($char === mb_strtoupper($char)) {
+                $columnName .= sprintf('_%s', mb_strtolower($char));
             } else {
                 $columnName .= $char;
             }
@@ -112,7 +112,7 @@ abstract class Manager implements Singleton
             if ($char === '_') {
                 $toUppercase = true;
             } else {
-                $columnName .= $toUppercase ? strtoupper($char) : $char;
+                $columnName .= $toUppercase ? mb_strtoupper($char) : $char;
 
                 $toUppercase = false;
             }

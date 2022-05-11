@@ -48,7 +48,7 @@ abstract class Config implements Singleton
     private function interpretConfig(?string $configFile = null): array
     {
         $configFile = $configFile ?? $this->configFile;
-        $explodedConfigFile = explode('.', strtolower($configFile));
+        $explodedConfigFile = explode('.', mb_strtolower($configFile));
         $fileEnding = end($explodedConfigFile);
 
         $configType = ConfigType::getByString($fileEnding);
