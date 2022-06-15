@@ -7,3 +7,7 @@ Handler\TestHandler:
 Handler\LoginHandler:
   route: /login
   methods: [GET]
+
+Handler\HTMLHandler:
+  route: /html
+  methods: [GET]
