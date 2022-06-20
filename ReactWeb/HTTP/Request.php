@@ -25,6 +25,7 @@ final class Request
      * @param Header $header
      * @param array $queryParams
      * @param array $cookies
+     * @param array $body
      */
     public function __construct(
         public readonly string $uri,
@@ -32,7 +33,8 @@ final class Request
         public readonly Method $method,
         public readonly Header $header,
         public readonly array $queryParams,
-        public readonly array $cookies
+        public readonly array $cookies,
+        public readonly array $body,
     )
     {
     }

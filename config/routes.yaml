@@ -11,3 +11,7 @@ Handler\LoginHandler:
 Handler\HTMLHandler:
   route: /html
   methods: [GET]
+
+Handler\FormHandler:
+  route: /form
+  methods: [GET, POST]

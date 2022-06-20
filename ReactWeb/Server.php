@@ -135,6 +135,7 @@ final class Server
                     header: new Header(array_change_key_case($request->getHeaders(), CASE_LOWER)),
                     queryParams: $request->getQueryParams(),
                     cookies: $request->getCookieParams(),
+                    body: $request->getParsedBody() ?? []
                 );
 
                 Logger::debug($this, sprintf('Incoming request %s %s (%s)', $r->method->value, $r->route, $r->uri));

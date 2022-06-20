@@ -7,7 +7,6 @@ namespace App\Handler;
 use ReactWeb\Handler\Handler;
 use ReactWeb\HTML\Attribute\Style;
 use ReactWeb\HTML\Element;
-use ReactWeb\HTML\Element\HTML;
 use ReactWeb\HTTP\Request;
 use ReactWeb\HTTP\Response;
 use ReactWeb\Routing\RouteAwareHandler;
@@ -21,10 +20,9 @@ use ReactWeb\Routing\RouteAwareHandler;
  */
 class HTMLHandler extends Handler implements RouteAwareHandler
 {
-
     public function handle(Request $request, array $vars): Response
     {
-        $html = new HTML();
+        $html = new Element('html');
 
         $head = new Element('head');
 
@@ -54,7 +52,6 @@ class HTMLHandler extends Handler implements RouteAwareHandler
         $body->add($div);
 
         $html->add($body);
-
 
         return new Response\HTMLResponse(
             $html->toHTML()
