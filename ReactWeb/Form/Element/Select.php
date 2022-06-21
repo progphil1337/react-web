@@ -6,6 +6,7 @@ namespace ReactWeb\Form\Element;
 
 use ReactWeb\Form\AbstractInput;
 use ReactWeb\Form\Enum\InputType;
+use ReactWeb\Form\Validation\Validator\InArray;
 use ReactWeb\HTML\Attribute;
 use ReactWeb\HTML\Element;
 
@@ -39,6 +40,8 @@ class Select extends AbstractInput
         $this->elements[] = $select;
 
         parent::__construct($name, InputType::SELECT, $label);
+
+        $this->addValidator(new InArray(array_keys($options)));
     }
 
     public function setValue(mixed $value): self
