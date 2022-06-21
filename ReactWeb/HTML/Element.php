@@ -158,11 +158,13 @@ class Element
     }
 
     /**
+     * @param bool $withAttributes
+     * @param bool $withChildren
      * @return string
      */
-    public function toHTML(): string
+    public function toHTML(bool $withAttributes = true, bool $withChildren = true): string
     {
-        $attributes = count($this->attributes) > 0 ? ' ' . implode(' ', array_map(fn(Attribute $a) => $a->toHTML(), $this->attributes)) : '';
+        $attributes = count($this->attributes) > 0 && $withAttributes ? ' ' . implode(' ', array_map(fn(Attribute $a) => $a->toHTML(), $this->attributes)) : '';
 
         if ($this->voidElement) {
             return <<<HTML
@@ -170,7 +172,7 @@ class Element
 HTML;
         }
 
-        $innerHTML = count($this->elements) > 0 ? implode(PHP_EOL, array_map(fn(Element $e) => $e->toHTML(), $this->elements)) : '';
+        $innerHTML = count($this->elements) > 0 && $withChildren ? implode(PHP_EOL, array_map(fn(Element $e) => $e->toHTML(), $this->elements)) : '';
 
         return <<<HTML
 <{$this->name}{$attributes}>

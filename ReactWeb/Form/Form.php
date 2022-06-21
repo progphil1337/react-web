@@ -27,7 +27,7 @@ abstract class Form
     /** @var array<\ReactWeb\Form\Input> */
     private array $inputs = [];
 
-    public function __construct(string $name, Method $method, string $action = null)
+    public function __construct(string $name, public readonly Method $method, string $action = null)
     {
         $this->form = (new Element('form'))
             ->addAttribute(new Attribute('name', $name))
@@ -51,19 +51,30 @@ abstract class Form
         return $this;
     }
 
-    // @TODO: Add Error messages
-    public function validate(array $body, bool $fill = true): Result
+    public function get(string $name): ?Input
+    {
+        return $this->inputs[$name] ?? null;
+    }
+
+    public function prepare(): void
     {
         if (!$this->built) {
             $this->build();
+
             $this->built = true;
         }
+    }
+
+    // @TODO: Add Error messages
+    public function validate(array $body, bool $fill = true): Result
+    {
+        $this->prepare();
 
         $validationResult = new Result();
 
         foreach ($this->inputs as $input) {
             foreach ($input->validate($body[$input->name]) as $failedValidation) {
-                $validationResult->addErrorMessage($input, $failedValidation);
+                $validationResult->addErrorMessage($input, $failedValidation, $failedValidation->getErrorMessage($body[$input->name]));
             }
         }
 
@@ -76,18 +87,19 @@ abstract class Form
         return $validationResult;
     }
 
-    public function toHTML(): string
+    public function toHTML(bool $attributes = true, bool $children = true): string
     {
-        if (!$this->built) {
-            $this->build();
-            $this->built = true;
-        }
+        $this->prepare();
 
         foreach ($this->inputs as $input) {
-            $this->form->add($input->element);
+            if ($input->label !== null) {
+                $this->form->addElement($input->label);
+            }
+
+            $this->form->addElement($input->element);
         }
 
-        return $this->form->toHTML();
+        return $this->form->toHTML($attributes, $children);
     }
 
     public function __toString(): string
@@ -97,10 +109,21 @@ abstract class Form
 
     protected function submitButton(string $text): Element
     {
-        $input = new Input($text, InputType::SUBMIT);
+        $input = new Input(InputType::SUBMIT->value, InputType::SUBMIT);
+        $input->element->addAttribute(new Attribute('value', $text, true));
 
-        $this->add(new Input($text, InputType::SUBMIT));
+        $this->add($input);
 
         return $input->element;
+    }
+
+    public function openTag(): string
+    {
+        return str_replace($this->closeTag(), '', $this->toHTML(true, false));
+    }
+
+    public function closeTag(): string
+    {
+        return '</form>';
     }
 }

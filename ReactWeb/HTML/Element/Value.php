@@ -25,9 +25,11 @@ final class Value extends Element
     }
 
     /**
+     * @param bool $withAttributes
+     * @param bool $withChildren
      * @return string
      */
-    public function toHTML(): string
+    public function toHTML(bool $withAttributes = true, bool $withChildren = true): string
     {
         return $this->htmlspecialchars ? htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') : $this->value;
     }

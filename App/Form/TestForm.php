@@ -28,12 +28,12 @@ class TestForm extends Form
 
     protected function build(): void
     {
-        $username = new Input('username', InputType::TEXT);
+        $username = new Input('username', InputType::TEXT, 'Username');
         $username->addValidator(new MaxLength(1));
         $username->addValidator(new MinLength(1));
         $this->add($username);
 
-        $mail = new Input('mail', InputType::EMAIL);
+        $mail = new Input('mail', InputType::EMAIL, 'E-Mail');
         $this->add($mail);
 
         $this->submitButton('Speichern');

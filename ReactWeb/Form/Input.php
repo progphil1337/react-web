@@ -19,16 +19,30 @@ use ReactWeb\HTML\Element;
 class Input
 {
     public readonly Element $element;
+    public readonly ?Element $label;
+
     /**
      * @var array<Validator>
      */
     private array $validators = [];
 
-    public function __construct(public readonly string $name, private readonly InputType $type)
+    public function __construct(
+        public readonly string     $name,
+        private readonly InputType $type,
+        string                     $label = null
+    )
     {
         $this->element = (new Element('input', true))
             ->addAttribute(new Attribute('name', $name))
             ->addAttribute(new Attribute('type', $this->type->value));
+
+        if ($label !== null) {
+            $this->label = (new Element('label'))
+                ->addAttribute(new Attribute('for', $this->name))
+                ->innerText($label);
+        } else {
+            $this->label = null;
+        }
 
         foreach ($this->type->getDefaultValidators() as $validator) {
             if ($validator instanceof Validator) {

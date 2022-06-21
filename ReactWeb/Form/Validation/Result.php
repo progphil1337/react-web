@@ -18,13 +18,16 @@ final class Result
     /** @var array<Input, array<\ReactWeb\Form\Validation\Validator> */
     private array $errorMessages = [];
 
-    public function addErrorMessage(Input $input, Validator $validator): self
+    public function addErrorMessage(Input $input, Validator $validator, string $message): self
     {
         if (!array_key_exists($input->name, $this->errorMessages)) {
             $this->errorMessages[$input->name] = [];
         }
 
-        $this->errorMessages[$input->name][get_class($validator)] = $validator;
+        $this->errorMessages[$input->name][] = [
+            'message' => $message,
+            'validator' => $validator
+        ];
 
         return $this;
     }

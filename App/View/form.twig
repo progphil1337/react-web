@@ -1,0 +1,14 @@
+{{ form.openTag()|raw }}
+{{ errorMessages["username"]|join('<br />') }}
+{{ form.get("username").label|raw }}<br />
+{{ form.get("username").element|raw }}<br />
+<br />
+{{ errorMessages["mail"]|join('<br />') }}
+{{ form.get("mail").label|raw }}<br />
+{{ form.get("mail").element|raw }}<br />
+
+{{ form.get("submit").element|raw }}
+{{ form.closeTag()|raw }}
+
+
+{# you can also just do form|raw to auto generate the html #}

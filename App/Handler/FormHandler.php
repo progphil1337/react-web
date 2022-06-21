@@ -6,7 +6,6 @@ namespace App\Handler;
 
 use App\Form\TestForm;
 use ReactWeb\Handler\Handler;
-use ReactWeb\HTTP\Enum\Method;
 use ReactWeb\HTTP\Request;
 use ReactWeb\HTTP\Response;
 use ReactWeb\Routing\RouteAwareHandler;
@@ -25,15 +24,27 @@ class FormHandler extends Handler implements RouteAwareHandler
     {
         $form = new TestForm();
 
-        if ($request->method === Method::POST) {
+        $errorMessages = [];
+
+        if ($request->method === $form->method) {
             $result = $form->validate($request->body);
             $valid = $result->isValid();
 
             if (!$valid) {
-                return new Response\TextResponse(print_r($result->getErrorMessages(), true));
+                foreach ($result->getErrorMessages() as $inputName => $validators) {
+                    $errorMessages[$inputName] = [];
+                    foreach ($validators as $info) {
+                        $errorMessages[$inputName][] = $info['message'];
+                    }
+                }
             }
         }
 
-        return new Response\HTMLResponse($form->toHTML());
+        $form->prepare();
+
+        return $this->render('form', [
+            'form' => $form,
+            'errorMessages' => $errorMessages
+        ]);
     }
 }
