@@ -37,7 +37,7 @@ class Element
      */
     public function addAttribute(Attribute $attribute): self
     {
-        $this->attributes[] = $attribute;
+        $this->attributes[$attribute->name] = $attribute;
 
         return $this;
     }
@@ -59,11 +59,7 @@ class Element
      */
     public function removeAttribute(Attribute $attribute): self
     {
-        for ($i = 0; $i < count($this->attributes); $i++) {
-            if ($this->attributes[$i] === $attribute) {
-                unset($this->attributes[$i]);
-            }
-        }
+        unset($this->attributes[$attribute->name]);
 
         return $this;
     }

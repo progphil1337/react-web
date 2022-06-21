@@ -7,6 +7,7 @@ namespace App\Form;
 use ReactWeb\Form\AbstractInput;
 use ReactWeb\Form\Element\Input;
 use ReactWeb\Form\Element\Radio;
+use ReactWeb\Form\Element\Select;
 use ReactWeb\Form\Enum\InputType;
 use ReactWeb\Form\Form;
 use ReactWeb\Form\Validation\Validator\MaxLength;
@@ -42,12 +43,19 @@ class TestForm extends Form
             'php' => 'PHP',
             'csharp' => 'C-Sharp'
         ]);
-
         $radio->setValue('php');
-
         $this->add($radio);
 
+        $select = new Select('car', [
+            'volvo' => 'Volvo',
+            'vw' => 'VW',
+            'bmw' => 'BMW',
+            'audi' => 'Audi'
+        ], 'Auto');
 
+
+        $select->setValue('audi');
+        $this->add($select);
 
         $this->submitButton('Speichern');
     }

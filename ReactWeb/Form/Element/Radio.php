@@ -45,14 +45,10 @@ class Radio extends AbstractInput
         foreach ($this->elements as $element) {
             $attribute = $element->getAttribute('value');
             if ($attribute !== null && $attribute->getValue() === $value) {
-                $element->addAttribute(new Attribute('checked', 'checked'));
+                $element->addAttribute(new Attribute('checked'));
             }
         }
 
         return $this;
     }
-}
-
-{
-
 }

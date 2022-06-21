@@ -37,6 +37,7 @@ enum InputType: string
     case URL = 'url';
     case WEEK = 'week';
     case SUBMIT = 'submit';
+    case SELECT = 'select';
 
     public function getDefaultValidators(): array
     {

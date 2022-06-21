@@ -16,16 +16,18 @@ class Attribute
     /**
      * @var mixed
      */
-    private mixed $value;
+    private mixed $value = null;
 
     /**
      * @param string $name
      * @param string $value
      * @param bool $htmlspecialchars
      */
-    public function __construct(public readonly string $name, mixed $value, private bool $htmlspecialchars = true)
+    public function __construct(public readonly string $name, mixed $value = null, private bool $htmlspecialchars = true)
     {
-        $this->setValue($value);
+        if ($value !== null) {
+            $this->setValue($value);
+        }
     }
 
     public function setValue(mixed $value): self
@@ -45,9 +47,10 @@ class Attribute
      */
     public function toHTML(): string
     {
-        return <<<HTML
+        return $this->value !== null ? <<<HTML
 {$this->name}="{$this->value}"
-HTML;
+HTML:
+            $this->name;
     }
 
     public function __toString(): string
