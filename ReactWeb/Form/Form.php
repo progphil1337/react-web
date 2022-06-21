@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ReactWeb\Form;
 
+use ReactWeb\Form\Element\Input;
 use ReactWeb\Form\Enum\InputType;
 use ReactWeb\Form\Validation\Result;
 use ReactWeb\HTML\Attribute;
@@ -24,9 +25,7 @@ abstract class Form
 
     private bool $built = false;
 
-    private array $defaultValues = [];
-
-    /** @var array<\ReactWeb\Form\Input> */
+    /** @var array<\ReactWeb\Form\AbstractInput> */
     private array $inputs = [];
 
     public function __construct(string $name, public readonly Method $method, string $action = null)
@@ -62,10 +61,10 @@ abstract class Form
 
     abstract protected function build(): void;
 
-    public function add(Input $input): self
+    public function add(AbstractInput $input): self
     {
         if (array_key_exists($input->name, $this->inputs)) {
-            throw new \InvalidArgumentException(sprintf('Input with name %s already added', $input->name));
+            throw new \InvalidArgumentException(sprintf('AbstractInput with name %s already added', $input->name));
         }
 
         $this->inputs[$input->name] = $input;
@@ -73,7 +72,7 @@ abstract class Form
         return $this;
     }
 
-    public function get(string $name): ?Input
+    public function get(string $name): ?AbstractInput
     {
         return $this->inputs[$name] ?? null;
     }
@@ -116,11 +115,9 @@ abstract class Form
         $this->prepare();
 
         foreach ($this->inputs as $input) {
-            if ($input->label !== null) {
-                $this->form->addElement($input->label);
+            foreach ($input->getElements() as $element) {
+                $this->form->addElement($element);
             }
-
-            $this->form->addElement($input->element);
         }
 
         return $this->form->toHTML($attributes, $children);
@@ -134,11 +131,11 @@ abstract class Form
     protected function submitButton(string $text): Element
     {
         $input = new Input(InputType::SUBMIT->value, InputType::SUBMIT);
-        $input->element->addAttribute(new Attribute('value', $text, true));
+        $input->getElements()[0]->addAttribute(new Attribute('value', $text, true));
 
         $this->add($input);
 
-        return $input->element;
+        return $input->getElements()[0];
     }
 
     public function openTag(): string

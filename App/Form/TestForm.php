@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Form;
 
+use ReactWeb\Form\AbstractInput;
 use ReactWeb\Form\Element\Input;
+use ReactWeb\Form\Element\Radio;
 use ReactWeb\Form\Enum\InputType;
 use ReactWeb\Form\Form;
 use ReactWeb\Form\Validation\Validator\MaxLength;
@@ -35,6 +37,17 @@ class TestForm extends Form
 
         $mail = new Input('mail', InputType::EMAIL, 'E-Mail');
         $this->add($mail);
+
+        $radio = new Radio('language', [
+            'php' => 'PHP',
+            'csharp' => 'C-Sharp'
+        ]);
+
+        $radio->setValue('php');
+
+        $this->add($radio);
+
+
 
         $this->submitButton('Speichern');
     }

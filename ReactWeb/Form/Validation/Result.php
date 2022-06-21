@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ReactWeb\Form\Validation;
 
-use ReactWeb\Form\Input;
+use ReactWeb\Form\AbstractInput;
 
 /**
  * Result
@@ -15,10 +15,10 @@ use ReactWeb\Form\Input;
  */
 final class Result
 {
-    /** @var array<Input, array<\ReactWeb\Form\Validation\Validator> */
+    /** @var array<AbstractInput, array<\ReactWeb\Form\Validation\Validator> */
     private array $errorMessages = [];
 
-    public function addErrorMessage(Input $input, Validator $validator, string $message): self
+    public function addErrorMessage(AbstractInput $input, Validator $validator, string $message): self
     {
         if (!array_key_exists($input->name, $this->errorMessages)) {
             $this->errorMessages[$input->name] = [];
@@ -37,7 +37,7 @@ final class Result
         return count($this->errorMessages) === 0;
     }
 
-    public function getByInput(Input $input): array
+    public function getByInput(AbstractInput $input): array
     {
         return $this->errorMessages[$input->name] ?? [];
     }

@@ -4,24 +4,26 @@ declare(strict_types=1);
 
 namespace ReactWeb\Form;
 
+use ReactWeb\Form\Element\Input;
 use ReactWeb\Form\Enum\InputType;
 use ReactWeb\Form\Validation\Validator;
 use ReactWeb\HTML\Attribute;
 use ReactWeb\HTML\Element;
 
 /**
- * Input
+ * AbstractInput
  *
  * @package ReactWeb\Form
  * @author Philipp Lohmann <philipp.lohmann@check24.de>
  * @copyright CHECK24 GmbH
  */
-class Input
+abstract class AbstractInput
 {
-    public readonly Element $element;
+    /** @var array<Element> */
+    protected array $elements = [];
     public readonly ?Element $label;
 
-    private mixed $value;
+    protected mixed $value;
 
     /**
      * @var array<Validator>
@@ -29,15 +31,11 @@ class Input
     private array $validators = [];
 
     public function __construct(
-        public readonly string     $name,
-        private readonly InputType $type,
-        string                     $label = null
+        public readonly string       $name,
+        protected readonly InputType $type,
+        string                       $label = null
     )
     {
-        $this->element = (new Element('input', true))
-            ->addAttribute(new Attribute('name', $name))
-            ->addAttribute(new Attribute('type', $this->type->value));
-
         if ($label !== null) {
             $this->label = (new Element('label'))
                 ->addAttribute(new Attribute('for', $this->name))
@@ -55,20 +53,7 @@ class Input
         }
     }
 
-    public function setValue(mixed $value): self
-    {
-        $this->value = $value;
-
-        $attributeName = 'value';
-        $attribute = $this->element->getAttribute($attributeName);
-        if ($attribute !== null) {
-            $attribute->setValue($value);
-        } else {
-            $this->element->addAttribute(new Attribute($attributeName, $value, true));
-        }
-
-        return $this;
-    }
+    abstract public function setValue(mixed $value): self;
 
     public function getValue(): mixed
     {
@@ -79,8 +64,8 @@ class Input
     {
         $this->validators[$validator->key] = $validator;
 
-        if ($validator->getAttribute() !== null) {
-            $this->element->addAttribute($validator->getAttribute());
+        if ($validator->getAttribute() !== null && $this instanceof Input) {
+            $this->elements[0]->addAttribute($validator->getAttribute());
         }
 
         return $this;
@@ -98,5 +83,13 @@ class Input
         }
 
         return $results;
+    }
+
+    public function getElements(): array
+    {
+        return $this->label !== null ? [
+            $this->label,
+            ...$this->elements
+        ] : $this->elements;
     }
 }

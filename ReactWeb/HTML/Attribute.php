@@ -14,25 +14,30 @@ namespace ReactWeb\HTML;
 class Attribute
 {
     /**
-     * @var string
+     * @var mixed
      */
-    private string $value;
+    private mixed $value;
 
     /**
      * @param string $name
      * @param string $value
      * @param bool $htmlspecialchars
      */
-    public function __construct(public readonly string $name, string $value, private bool $htmlspecialchars = true)
+    public function __construct(public readonly string $name, mixed $value, private bool $htmlspecialchars = true)
     {
         $this->setValue($value);
     }
 
-    public function setValue(string $value): self
+    public function setValue(mixed $value): self
     {
         $this->value = $this->htmlspecialchars ? htmlspecialchars($value, ENT_COMPAT, 'UTF-8') : $value;
 
         return $this;
+    }
+
+    public function getValue(): mixed
+    {
+        return $this->value;
     }
 
     /**
