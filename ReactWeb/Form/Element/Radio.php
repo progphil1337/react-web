@@ -19,9 +19,13 @@ use ReactWeb\HTML\Element;
  */
 class Radio extends AbstractInput
 {
-    public function __construct(string $name, array $options)
+    /**
+     * @param string $name
+     * @param array<string,mixed> $options
+     */
+    public function __construct(string $name, array $options, string $label = null)
     {
-        foreach ($options as $value => $label) {
+        foreach ($options as $value => $text) {
 
             $id = sprintf('%s_%s', $name, $value);
 
@@ -33,14 +37,18 @@ class Radio extends AbstractInput
 
             $this->elements[] = (new Element('label'))
                 ->addAttribute(new Attribute('for', $id))
-                ->innerText($label);
+                ->innerText($text);
         }
 
-        parent::__construct($name, InputType::RADIO);
+        parent::__construct($name, InputType::RADIO, $label);
 
         $this->addValidator(new InArray(array_keys($options)));
     }
 
+    /**
+     * @param mixed $value
+     * @return $this
+     */
     public function setValue(mixed $value): self
     {
         $this->value = $value;

@@ -16,6 +16,9 @@ use ReactWeb\Form\Validation\Validator;
 class InArray extends Validator
 {
 
+    /**
+     * @param array<string> $allowedValues
+     */
     public function __construct(private readonly array $allowedValues)
     {
         parent::__construct('inarray', null);

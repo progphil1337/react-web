@@ -42,7 +42,7 @@ class TestForm extends Form
         $radio = new Radio('language', [
             'php' => 'PHP',
             'csharp' => 'C-Sharp'
-        ]);
+        ], 'Sprache');
         $radio->setValue('php');
         $this->add($radio);
 
