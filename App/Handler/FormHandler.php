@@ -24,6 +24,10 @@ class FormHandler extends Handler implements RouteAwareHandler
     {
         $form = new TestForm();
 
+        $form->setDefaultValues([
+            'mail' => 'test'
+        ]);
+
         $errorMessages = [];
 
         if ($request->method === $form->method) {

@@ -23,7 +23,7 @@ class Attribute
      * @param string $value
      * @param bool $htmlspecialchars
      */
-    public function __construct(private readonly string $name, string $value, private bool $htmlspecialchars = true)
+    public function __construct(public readonly string $name, string $value, private bool $htmlspecialchars = true)
     {
         $this->setValue($value);
     }

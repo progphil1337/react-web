@@ -26,7 +26,6 @@ class ConnectionManager implements Singleton
                 $this->mainConnectionName = $key;
             }
         }
-
     }
 
     /**

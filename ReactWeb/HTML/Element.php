@@ -42,6 +42,17 @@ class Element
         return $this;
     }
 
+    public function getAttribute(string $name): ?Attribute
+    {
+        foreach ($this->attributes as $attribute) {
+            if ($attribute->name === $name) {
+                return $attribute;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * @param \ReactWeb\HTML\Attribute $attribute
      * @return $this

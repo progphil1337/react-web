@@ -24,6 +24,8 @@ abstract class Form
 
     private bool $built = false;
 
+    private array $defaultValues = [];
+
     /** @var array<\ReactWeb\Form\Input> */
     private array $inputs = [];
 
@@ -36,6 +38,26 @@ abstract class Form
         if ($action !== null) {
             $this->form->addAttribute(new Attribute('action', $action));
         }
+    }
+
+    public function setDefaultValue(string $key, mixed $value): self
+    {
+        $this->prepare();
+
+        $this->inputs[$key]->setValue($value);
+
+        return $this;
+    }
+
+    public function setDefaultValues(array $values): self
+    {
+        $this->prepare();
+
+        foreach ($values as $key => $value) {
+            $this->setDefaultValue($key, $value);
+        }
+
+        return $this;
     }
 
     abstract protected function build(): void;
@@ -73,14 +95,16 @@ abstract class Form
         $validationResult = new Result();
 
         foreach ($this->inputs as $input) {
-            foreach ($input->validate($body[$input->name]) as $failedValidation) {
+            $input->setValue($body[$input->name]);
+
+            foreach ($input->validate() as $failedValidation) {
                 $validationResult->addErrorMessage($input, $failedValidation, $failedValidation->getErrorMessage($body[$input->name]));
             }
         }
 
         if ($fill) {
             foreach ($body as $key => $value) {
-                $this->inputs[$key]->element->addAttribute(new Attribute('value', $value, true));
+                $this->inputs[$key]->setValue($value);
             }
         }
 
@@ -125,5 +149,16 @@ abstract class Form
     public function closeTag(): string
     {
         return '</form>';
+    }
+
+    public function getValues(): array
+    {
+        $result = [];
+
+        foreach ($this->inputs as $input) {
+            $result[$input->name] = $input->getValue();
+        }
+
+        return $result;
     }
 }

@@ -21,6 +21,8 @@ class Input
     public readonly Element $element;
     public readonly ?Element $label;
 
+    private mixed $value;
+
     /**
      * @var array<Validator>
      */
@@ -53,6 +55,26 @@ class Input
         }
     }
 
+    public function setValue(mixed $value): self
+    {
+        $this->value = $value;
+
+        $attributeName = 'value';
+        $attribute = $this->element->getAttribute($attributeName);
+        if ($attribute !== null) {
+            $attribute->setValue($value);
+        } else {
+            $this->element->addAttribute(new Attribute($attributeName, $value, true));
+        }
+
+        return $this;
+    }
+
+    public function getValue(): mixed
+    {
+        return $this->value;
+    }
+
     public function addValidator(Validator $validator): self
     {
         $this->validators[$validator->key] = $validator;
@@ -65,12 +87,12 @@ class Input
     }
 
     // @TODO: Add Error messages
-    public function validate(mixed $data): array
+    public function validate(): array
     {
         $results = [];
 
         foreach ($this->validators as $validator) {
-            if (!$validator->validate($data)) {
+            if (!$validator->validate($this->value)) {
                 $results[] = $validator;
             }
         }
