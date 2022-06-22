@@ -28,6 +28,11 @@ abstract class Form
     /** @var array<\ReactWeb\Form\AbstractInput> */
     private array $inputs = [];
 
+    /**
+     * @param string $name
+     * @param \ReactWeb\HTTP\Enum\Method $method
+     * @param string|null $action
+     */
     public function __construct(string $name, public readonly Method $method, string $action = null)
     {
         $this->form = (new Element('form'))
@@ -39,6 +44,11 @@ abstract class Form
         }
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @return $this
+     */
     public function setDefaultValue(string $key, mixed $value): self
     {
         $this->prepare();
@@ -48,6 +58,10 @@ abstract class Form
         return $this;
     }
 
+    /**
+     * @param array<string,mixed> $values
+     * @return $this
+     */
     public function setDefaultValues(array $values): self
     {
         $this->prepare();
@@ -61,6 +75,10 @@ abstract class Form
 
     abstract protected function build(): void;
 
+    /**
+     * @param \ReactWeb\Form\AbstractInput $input
+     * @return $this
+     */
     public function add(AbstractInput $input): self
     {
         if (array_key_exists($input->name, $this->inputs)) {
@@ -72,6 +90,10 @@ abstract class Form
         return $this;
     }
 
+    /**
+     * @param string $name
+     * @return \ReactWeb\Form\AbstractInput|null
+     */
     public function get(string $name): ?AbstractInput
     {
         return $this->inputs[$name] ?? null;
@@ -86,7 +108,11 @@ abstract class Form
         }
     }
 
-    // @TODO: Add Error messages
+    /**
+     * @param array<string,mixed> $body
+     * @param bool $fill
+     * @return \ReactWeb\Form\Validation\Result
+     */
     public function validate(array $body, bool $fill = true): Result
     {
         $this->prepare();

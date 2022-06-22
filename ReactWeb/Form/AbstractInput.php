@@ -30,6 +30,11 @@ abstract class AbstractInput
      */
     private array $validators = [];
 
+    /**
+     * @param string $name
+     * @param \ReactWeb\Form\Enum\InputType $type
+     * @param string|null $label
+     */
     public function __construct(
         public readonly string       $name,
         protected readonly InputType $type,
@@ -53,6 +58,10 @@ abstract class AbstractInput
         }
     }
 
+    /**
+     * @param mixed $value
+     * @return $this
+     */
     abstract public function setValue(mixed $value): self;
 
     public function getValue(): mixed
@@ -60,6 +69,10 @@ abstract class AbstractInput
         return $this->value;
     }
 
+    /**
+     * @param \ReactWeb\Form\Validation\Validator $validator
+     * @return $this
+     */
     public function addValidator(Validator $validator): self
     {
         $this->validators[$validator->key] = $validator;
@@ -71,7 +84,6 @@ abstract class AbstractInput
         return $this;
     }
 
-    // @TODO: Add Error messages
     public function validate(): array
     {
         $results = [];

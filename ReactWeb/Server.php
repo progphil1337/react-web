@@ -141,7 +141,8 @@ final class Server
                 Logger::debug($this, sprintf('Incoming request %s %s (%s)', $r->method->value, $r->route, $r->uri));
 
                 $uri = $r->route;
-                if (false !== $pos = strpos($uri, '?')) {
+                $pos = strpos($uri, '?');
+                if ($pos !== false) {
                     $uri = substr($uri, 0, $pos);
                 }
                 $uri = rawurldecode($uri);
