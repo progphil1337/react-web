@@ -5,13 +5,17 @@
  * @var \ReactWeb\DependencyInjection\Injector $injector
  */
 
+use FastRoute\Dispatcher;
+
 $lookup
     // class aliases
     ->alias(get_class($config), \ReactWeb\Config\Config::class)
+    ->alias(Dispatcher\GroupCountBased::class, Dispatcher::class)
 
     // register singletons
     ->singleton(\ReactWeb\DependencyInjection\Singleton::class)
     ->singleton(Twig\Environment::class)
+    ->singleton(Dispatcher::class)
 
     // Register classes that cannot be created
     ->register($config)

@@ -21,9 +21,9 @@ abstract class Response
      * @param array $header
      */
     public function __construct(
-        private       readonly string $content,
-        private       readonly int $code = 200,
-        private array $header = ['charset' => 'utf-8']
+        private readonly string $content,
+        private readonly int    $code = 200,
+        private array           $header = ['charset' => 'utf-8']
     )
     {
     }
@@ -55,5 +55,29 @@ abstract class Response
         }
 
         return new HttpResponse($this->code, $this->header, $this->content);
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent(): string
+    {
+        return $this->content;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCode(): int
+    {
+        return $this->code;
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getHeader(): array
+    {
+        return $this->header;
     }
 }

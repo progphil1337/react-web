@@ -86,6 +86,8 @@ final class Server
                 }
             }
         });
+
+        $this->injector->getLookup()->register($this->routeDispatcher);
     }
 
     /**

@@ -84,4 +84,12 @@ final class Injector
 
         return $instance;
     }
+
+    /**
+     * @return \ReactWeb\DependencyInjection\ClassLookup
+     */
+    public function getLookup(): ClassLookup
+    {
+        return $this->lookup;
+    }
 }

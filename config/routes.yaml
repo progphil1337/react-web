@@ -15,3 +15,11 @@ Handler\HTMLHandler:
 Handler\FormHandler:
   route: /form
   methods: [GET, POST]
+
+Handler\Api\TestApiHandler:
+  route: /api/test
+  methods: [GET, POST]
+
+Handler\InternalApiCallHandler:
+  route: /internal-api-call
+  methods: [GET]
