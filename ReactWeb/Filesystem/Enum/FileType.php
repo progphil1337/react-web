@@ -8,8 +8,7 @@ namespace ReactWeb\Filesystem\Enum;
  * FileType
  *
  * @package ReactWeb\Filesystem\Enum
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 enum FileType: string
 {

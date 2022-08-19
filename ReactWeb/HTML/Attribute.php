@@ -8,8 +8,7 @@ namespace ReactWeb\HTML;
  * Attribute
  *
  * @package ReactWeb\HTML
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class Attribute
 {

@@ -10,8 +10,7 @@ use ReactWeb\Form\Validation\Validator;
  * RegEx
  *
  * @package ReactWeb\Form\Validation\Validator
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class RegEx extends Validator
 {

@@ -12,8 +12,7 @@ use ReactWeb\HTTP\Response\FileResponse;
  * File
  *
  * @package ReactWeb\Filesystem
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class File
 {

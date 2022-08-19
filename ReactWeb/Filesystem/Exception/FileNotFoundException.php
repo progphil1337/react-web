@@ -11,8 +11,7 @@ use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
  * FileNotFoundException
  *
  * @package ReactWeb\Filesystem\Exception
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 final class FileNotFoundException extends Exception
 {

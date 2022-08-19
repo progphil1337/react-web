@@ -10,8 +10,7 @@ use ReactWeb\HTML\Attribute;
  * Style
  *
  * @package ReactWeb\HTML\Attribute
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 final class Style extends ArrayValueAttribute
 {

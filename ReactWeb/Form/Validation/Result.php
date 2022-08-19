@@ -10,8 +10,7 @@ use ReactWeb\Form\AbstractInput;
  * Result
  *
  * @package ReactWeb\Form\Validation
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 final class Result
 {

@@ -18,8 +18,7 @@ use ReactWeb\HTTP\Enum\Method;
  * TestForm
  *
  * @package App\Form
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class TestForm extends Form
 {

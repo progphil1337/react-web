@@ -10,8 +10,7 @@ use ReactWeb\HTTP\Response;
  * JsonResponse
  *
  * @package ReactWeb\HTTP\Response
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class JsonResponse extends Response
 {

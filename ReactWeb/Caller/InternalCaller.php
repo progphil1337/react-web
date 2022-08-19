@@ -16,8 +16,7 @@ use \RuntimeException;
  * InternalCaller
  *
  * @package ReactWeb\Caller
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class InternalCaller implements Singleton
 {

@@ -10,8 +10,7 @@ use ReactWeb\Form\Validation\Validator\Mail;
  * InputType
  *
  * @package ReactWeb\Form\Enum
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 enum InputType: string
 {

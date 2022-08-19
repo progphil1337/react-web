@@ -15,8 +15,7 @@ use ReactWeb\Routing\RouteAwareHandler;
  * HTMLHandler
  *
  * @package App\Handler
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class HTMLHandler extends Handler implements RouteAwareHandler
 {

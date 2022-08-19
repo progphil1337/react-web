@@ -11,11 +11,10 @@ use ReactWeb\HTTP\Request;
 use ReactWeb\Routing\RouteAwareHandler;
 
 /**
- * InteralApiCallHandler
+ * InternalApiCallHandler
  *
  * @package App\Handler
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class InternalApiCallHandler extends Handler implements RouteAwareHandler
 {
@@ -28,6 +27,12 @@ class InternalApiCallHandler extends Handler implements RouteAwareHandler
 
     public function handle(Request $request, array $vars): Response
     {
-        return $this->caller->get('/api/test');
+        $response = $this->caller->get('/api/test');
+
+        $data = json_decode($response->getContent(), true);
+
+        return new Response\HTMLResponse(<<<HTML
+<b>{$data['text']}</b>
+HTML);
     }
 }

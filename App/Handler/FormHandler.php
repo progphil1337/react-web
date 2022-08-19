@@ -14,8 +14,7 @@ use ReactWeb\Routing\RouteAwareHandler;
  * FormHandler
  *
  * @package App\Handler
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class FormHandler extends Handler implements RouteAwareHandler
 {

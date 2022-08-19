@@ -13,8 +13,7 @@ use ReactWeb\Routing\RouteAwareHandler;
  * TestApiHandler
  *
  * @package App\Handler\Api
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class TestApiHandler extends Handler implements RouteAwareHandler
 {

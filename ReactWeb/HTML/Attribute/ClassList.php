@@ -8,8 +8,7 @@ namespace ReactWeb\HTML\Attribute;
  * ClassList
  *
  * @package ReactWeb\HTML\Attribute
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 class ClassList extends ArrayValueAttribute
 {

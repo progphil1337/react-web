@@ -14,8 +14,7 @@ use ReactWeb\HTML\Element;
  * AbstractInput
  *
  * @package ReactWeb\Form
- * @author Philipp Lohmann <philipp.lohmann@check24.de>
- * @copyright CHECK24 GmbH
+ * @author Philipp Lohmann <lohmann.philipp@gmx.net>
  */
 abstract class AbstractInput
 {
