@@ -10,7 +10,7 @@ use ReactWeb\DependencyInjection\ClassLookup;
 use ReactWeb\DependencyInjection\Injector;
 use ReactWeb\Enum\BasicAction;
 use ReactWeb\Logger\Logger;
-use ReactWeb\Server;
+use ReactWeb\App;
 use ReactWeb\Routing\Exception\RoutesFileNotFoundException;
 
 require_once 'autoload.php';
@@ -36,12 +36,14 @@ try {
     $injector = new Injector($lookup);
     require_once 'di_registry.php';
 
-    $server = Server::create($config, $injector);
+    $app = App::create($config, $injector);
 
-    $managerFactory = new ManagerFactory($config, $injector);
-    $managerFactory->registerManagers();
+    if ($config->get('Connection') !== null) {
+        $managerFactory = new ManagerFactory($config, $injector);
+        $managerFactory->registerManagers();
+    }
 
-    $server->run();
+    $app->run();
 } catch (RoutesFileNotFoundException|ConfigFileNotFoundException|ConfigFileNotInterpretableException $e) {
     echo sprintf('%s\n%s', $e->getMessage(), $e->getFile());
 

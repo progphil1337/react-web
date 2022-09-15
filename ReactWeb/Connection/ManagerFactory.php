@@ -24,8 +24,9 @@ final class ManagerFactory
      */
     public function __construct(private readonly Config $config, private readonly Injector $injector)
     {
-        /** @var \ReactWeb\Connection\ConnectionManager connectionManager */
-        $this->connectionManager = $this->injector->create(ConnectionManager::class);
+        /** @var \ReactWeb\Connection\ConnectionManager $connectionManager */
+        $connectionManager = $this->injector->create(ConnectionManager::class);
+        $this->connectionManager = $connectionManager;
     }
 
     /**

@@ -8,6 +8,9 @@
     "twig/twig": "^3.0",
     "ext-sqlite3": "*",
     "react/child-process": "0.6.4",
-    "ext-pdo": "*"
-  }
+    "ext-pdo": "*",
+    "ext-curl": "*",
+    "progphil1337/php-forms": "*"
+  },
+  "minimum-stability": "dev"
 }

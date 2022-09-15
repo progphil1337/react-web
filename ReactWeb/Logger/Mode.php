@@ -16,6 +16,7 @@ enum Mode: int
     case INFO = 1;
     case NOTICE = 2;
     case ERROR = 3;
+    case DUMP = 4;
 
     /**
      * @return string
@@ -27,6 +28,7 @@ enum Mode: int
             self::INFO->value => 'INFO',
             self::NOTICE->value => 'NOTICE',
             self::ERROR->value => 'ERROR',
+            self::DUMP->value => 'DUMP'
         };
     }
 }

@@ -18,8 +18,8 @@ final class Route
     /**
      * @param string $route
      * @param string $handler
-     * @param array $httpMethods
-     * @param array $middlewares
+     * @param array<\ReactWeb\HTTP\Enum\Method> $httpMethods
+     * @param array<\ReactWeb\Middleware\Middleware> $middlewares
      */
     public function __construct(
         public readonly string $route,

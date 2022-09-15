@@ -73,6 +73,11 @@ final class Logger
         self::log(Mode::ERROR, $o, $string);
     }
 
+    public static function dump(object|string $o, mixed $var): void
+    {
+        self::log(Mode::DUMP, $o, print_r($var, true));
+    }
+
     /**
      * @param \ReactWeb\Logger\Mode $mode
      * @param object|string $o
@@ -86,7 +91,6 @@ final class Logger
         }
 
         if (self::$config['enabled'] !== 1) {
-
             return;
         }
 

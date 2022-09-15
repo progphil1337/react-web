@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use ProgPhil1337\PhpHtml\Attribute\Style;
+use ProgPhil1337\PhpHtml\Element;
 use ReactWeb\Handler\Handler;
-use ReactWeb\HTML\Attribute\Style;
-use ReactWeb\HTML\Element;
 use ReactWeb\HTTP\Request;
 use ReactWeb\HTTP\Response;
 use ReactWeb\Routing\RouteAwareHandler;

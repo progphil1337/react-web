@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ReactWeb\Connection;
 
 use PDO;
+use ReactWeb\Logger\Logger;
 
 /**
  * DatabaseConnection
@@ -31,6 +32,10 @@ class DatabaseConnection
     private function connect(): void
     {
         $dsn = sprintf('mysql:host=%s;port=%s;dbname=%s;charset=%s', $this->host, $this->port, $this->dbname, $this->charset);
-        $this->pdo = new PDO($dsn, $this->username, $this->password);
+        try {
+            $this->pdo = new PDO($dsn, $this->username, $this->password);
+        } catch (\PDOException $e) {
+            Logger::error($this, sprintf('Unable to create database connection with dsn:%s %s', PHP_EOL, $dsn));
+        }
     }
 }

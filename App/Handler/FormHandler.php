@@ -8,6 +8,7 @@ use App\Form\TestForm;
 use ReactWeb\Handler\Handler;
 use ReactWeb\HTTP\Request;
 use ReactWeb\HTTP\Response;
+use ReactWeb\Logger\Logger;
 use ReactWeb\Routing\RouteAwareHandler;
 
 /**
@@ -29,7 +30,7 @@ class FormHandler extends Handler implements RouteAwareHandler
 
         $errorMessages = [];
 
-        if ($request->method === $form->method) {
+        if ($request->method->value === $form->method->value) {
             $result = $form->validate($request->body);
             $valid = $result->isValid();
 
@@ -42,8 +43,6 @@ class FormHandler extends Handler implements RouteAwareHandler
                 }
             }
         }
-
-        $form->prepare();
 
         return $this->render('form', [
             'form' => $form,
