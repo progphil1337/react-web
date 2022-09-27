@@ -1,7 +1,7 @@
 {
   "require": {
     "react/event-loop": "^1.2",
-    "react/http": "^1.5",
+    "react/http": "^1.7",
     "react/stream": "^1.2",
     "symfony/yaml": "^6.0",
     "nikic/fast-route": "^1.3",
